@@ -42,3 +42,11 @@ The portrait currently shown is a placeholder. The bio is a draft, the article a
 - Reloaded the homepage and confirmed Crimson Text is applied, both designer and photo-picker controls are absent, and the portrait loads from `assets/portrait.jpg`.
 - Saved the selected browser preview photo as a permanent site asset. The sample writing remains unchanged.
 - Screenshot: `artifacts/home-without-designer.png`.
+
+## Editable content — 2026-10-11
+
+- Built the six static pages and passed all twelve tests. The new isolated build test edits the homepage bio and personal settings, adds a writing, then deletes it and rebuilds. It verifies rendered math and links, updated identity/CV labels, automatic homepage/listing updates, and removal of the old article output.
+- Inspected the homepage at 1280 × 720: Crimson Text is applied, the portrait loads, and the bio begins around 235 px. The Paper palette, blue links, burgundy contour, and absence of design controls are preserved.
+- Visually checked teaching and making layouts. Confirmed both Princeton teaching roles and their dates, the planned talk, five earlier research entries, and the CV footnote survived extraction to Markdown.
+- Checked all five main pages at 390 × 844: no horizontal overflow and the CV button remains visible. Reset the temporary viewport afterward.
+- Saved `artifacts/editable-home.png`. The local preview needed restarting before inspection; no hosting configuration changed.

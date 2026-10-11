@@ -2,6 +2,7 @@
 title: A little room for an equation
 date: 2026-10-10
 kind: Layout specimen
+sample: true
 section: academic
 description: A sample page for trying the typography, equations, and reading rhythm. Not a post by Rafael.
 ---

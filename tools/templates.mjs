@@ -3,7 +3,7 @@ import { escapeHtml as esc } from './content.mjs';
 const navigation = [['index.html','Home','00'],['research.html','Research','01'],['writing.html','Writings','02'],['teaching.html','Teaching & talks','03'],['making.html','Things I make','04']];
 const sectionTitle = (n, title, link = '') => `<div class="section-title"><h2><span>${n}</span> ${title}</h2>${link}</div>`;
 const arrowLink = (url, text) => `<a class="text-link" href="${url}">${text} <span aria-hidden="true">↗</span></a>`;
-const item = (date,title,body,extra='') => `<div class="entry"><div class="entry-date">${date}</div><div><h3>${title}</h3><p>${body}</p>${extra}</div></div>`;
+const item = entry => `<div class="entry"><div class="entry-date">${esc(entry.label)}</div><div class="entry-copy"><h3>${esc(entry.title)}</h3>${entry.html}</div></div>`;
 
 export function motif() {
   let contours = '';
@@ -27,11 +27,11 @@ export function shell(site, page, title, content, { post = false } = {}) {
   const nav = navigation.map(([href,label,n]) => `<a href="${href}" ${href === page || (post && href === 'writing.html') ? 'aria-current="page"' : ''}><span class="nav-number">${n}</span><span>${label}</span></a>`).join('');
   return `<!doctype html>
 <html lang="en" data-theme="${esc(site.defaultTheme)}" data-font="${esc(site.defaultFont)}" data-accent="${esc(site.defaultAccent)}" data-layout="${esc(site.defaultLayout)}" data-motif="${esc(site.defaultMotif)}" data-motif-color="${esc(site.defaultMotifColor)}" data-photo="${site.portrait?'yes':'no'}">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${esc(title)} · ${esc(site.name)}</title><meta name="description" content="${esc(site.name)}, physics PhD student and Arthur L. Hughes Fellow at Washington University in St. Louis. Research, writing, teaching, and small software projects."><meta name="color-scheme" content="light dark">${site.previewTools?'<meta name="robots" content="noindex, nofollow">':''}<link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="assets/katex/katex.min.css"><link rel="stylesheet" href="assets/style.css">${site.previewTools?'<script src="assets/appearance.js"></script><script type="module" src="assets/site.js"></script>':''}</head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${esc(title)} · ${esc(site.name)}</title><meta name="description" content="${esc(`${site.name} — ${site.role}, ${site.affiliation}.`)}"><meta name="color-scheme" content="light dark">${site.previewTools?'<meta name="robots" content="noindex, nofollow">':''}<link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="assets/katex/katex.min.css"><link rel="stylesheet" href="assets/style.css">${site.previewTools?'<script src="assets/appearance.js"></script><script type="module" src="assets/site.js"></script>':''}</head>
 <body><a class="skip-link" href="#main">Skip to content</a>
-<div class="page-shell"><header class="site-header"><div class="running-head"><a class="site-name" href="index.html" aria-label="Rafael Coca Salazar home">R. A. Coca Salazar</a><a class="cv-link" href="assets/${esc(site.cvFile)}" download aria-label="Download CV (May 2026 PDF)" title="Download CV · May 2026">CV <span aria-hidden="true">↓</span></a></div><nav aria-label="Main navigation">${nav}</nav></header>
+<div class="page-shell"><header class="site-header"><div class="running-head"><a class="site-name" href="index.html" aria-label="${esc(site.name)} home">${esc(site.shortName)}</a><a class="cv-link" href="assets/${esc(site.cvFile)}" download aria-label="Download CV (${esc(site.cvDate)} PDF)" title="Download CV · ${esc(site.cvDate)}">CV <span aria-hidden="true">↓</span></a></div><nav aria-label="Main navigation">${nav}</nav></header>
 <main id="main">${content}</main>
-<footer class="site-footer"><span>Rafael Arturo Coca Salazar <span class="footer-dot">·</span> St. Louis, Missouri</span><a href="mailto:${esc(site.email)}">Email ↗</a><a href="assets/${esc(site.cvFile)}" download>CV · May 2026 ↓</a></footer></div>
+<footer class="site-footer"><span>${esc(site.name)} <span class="footer-dot">·</span> ${esc(site.location)}</span><a href="mailto:${esc(site.email)}">Email ↗</a><a href="assets/${esc(site.cvFile)}" download>CV · ${esc(site.cvDate)} ↓</a></footer></div>
 ${site.previewTools ? explorer(site) : ''}
 </body></html>`;
 }
@@ -47,40 +47,46 @@ function explorer(site) {
 </div></aside>`;
 }
 
-export function home(site) {
-  return `<section class="home-intro"><div class="home-copy"><h1>Rafael Arturo <span>Coca Salazar</span></h1><p class="position">Physics PhD student · Arthur L. Hughes Fellow</p><p class="affiliation">${esc(site.affiliation)}</p><div class="abstract"><p>I’m interested in theoretical biophysics and condensed matter, and I’m currently exploring a small project with Mikhail Tikhonov.</p><p>My earlier work spans lattice QED, particle physics, and machine learning. I also teach physics and make small pieces of software.</p></div><div class="abstract-links">${arrowLink('research.html','Research')}${arrowLink(`mailto:${esc(site.email)}`,'Email')}</div></div>
+// This file controls layout. Author-facing text lives in content/*.md and site.json.
+export function home(site, content, posts) {
+  const current = content.currently.sections[0];
+  const recent = posts.filter(post => post.section !== 'academic' && !post.sample).slice(0, 3);
+  const writings = content.writings;
+  return `<section class="home-intro"><div class="home-copy"><h1>${esc(site.givenNames)} <span>${esc(site.familyName)}</span></h1><p class="position">${esc(site.role)}</p><p class="affiliation">${esc(site.affiliation)}</p><div class="abstract">${content.home}</div><div class="abstract-links">${arrowLink('research.html','Research')}${arrowLink(`mailto:${esc(site.email)}`,'Email')}</div></div>
 <aside class="portrait-margin"><figure class="portrait-figure"><div class="portrait-frame">${site.portrait?`<img class="portrait-image" src="assets/${esc(site.portrait)}" alt="${esc(site.portraitAlt)}">`:site.previewTools?'<img class="portrait-image" alt="Your selected portrait" hidden>':''}<div class="portrait-placeholder"><span class="portrait-initials">racs.</span>${site.previewTools?'<span>Your portrait</span><button class="choose-portrait" type="button">Try a photograph ↗</button>':''}</div></div></figure></aside></section>
-<section class="current-section">${sectionTitle('01','Currently')}<div class="current-grid"><div class="current-entries">${item('RESEARCH','Biophysics & condensed matter','An exploratory project with Mikhail Tikhonov at WashU.')}${item('TEACHING','Focused Physics I','TA for Physics 1760, alongside earlier teaching and tutoring at Princeton.',arrowLink('teaching.html','Teaching & talks'))}${item('MAKING','Niceties','Small tools for everyday friction, starting with Paper Night.',arrowLink('making.html','Things I make'))}</div>${motif()}</div></section>
-<section class="home-writings">${sectionTitle('02','Writings',arrowLink('writing.html','Browse writings'))}<p>Informal posts and reflections, followed by academic writing.</p><p class="quiet-note">No posts yet. An equation specimen is available in the academic section.</p></section>`;
+${current ? `<section class="current-section">${sectionTitle('01',esc(current.title))}<div class="current-grid"><div class="current-entries">${content.currently.html || ''}${current.html}${current.entries.map(item).join('')}${current.after}</div>${motif()}</div></section>` : content.currently.html || ''}
+<section class="home-writings">${sectionTitle('02',esc(writings.title),arrowLink('writing.html','Browse writings'))}<p>${esc(writings.homeDescription || writings.description)}</p>${recent.length ? rows(recent) : '<p class="quiet-note">No posts yet.</p>'}</section>`;
 }
 
-export function pageHeading(n, title, subtitle) { return `<header class="document-heading"><p class="eyebrow">§ ${n} / RAFAEL ARTURO COCA SALAZAR</p><h1>${title}</h1><p class="document-deck">${subtitle}</p></header>`; }
-
-export function research() {
-  return `${pageHeading('01','Research','From quantum fields toward living systems.')}<div class="document-body"><section>${sectionTitle('1','Current direction')}<p class="lead">My current interests lie between theoretical biophysics and condensed matter. I’m exploring a small project with Mikhail Tikhonov at WashU.</p><p class="quiet-note">This is an exploratory project; I have not formally joined the group.</p></section><section>${sectionTitle('2','Selected earlier work')}
-${item('2025–2026¹','Beam-induced backgrounds','Lawrence Berkeley National Laboratory · US Muon Collider Collaboration. Studied oversampling methods that preserve particle correlations and machine learning approaches to generating background data.')}
-${item('2024–2025','2+1D Hamiltonian lattice QED','Princeton University. Derived and implemented a lattice model in Mathematica; computed ground-state energies, fermion bilinears, and mass gaps on a 2 × 2 lattice, reproducing perturbative results.')}
-${item('SUMMER 2024','Understanding a machine learning trigger','CERN · CMS. Investigated the CICADA Level-1 trigger through generated calorimeter deposit patterns and identified systematic biases associated with tower calibration.')}
-${item('2024','Large-order quantum mechanics','Princeton University. Used instanton calculations to study correlation functions and large-order perturbative behavior in quantum-mechanical toy models.')}
-${item('2023–2024','Axions & precision measurement','Princeton University. Reviewed axion detection experiments and investigated heading-error corrections in SERF magnetometers.')}
-<p class="footnote">¹ The May 2026 CV lists this project as ongoing. Its present status still needs updating.</p></section></div>`;
+export function pageHeading(site, n, title, subtitle) {
+  return `<header class="document-heading"><p class="eyebrow">§ ${n} / ${esc(site.name)}</p><h1>${esc(title)}</h1><p class="document-deck">${esc(subtitle || '')}</p></header>`;
 }
 
-export function teaching() {
-  return `${pageHeading('03','Teaching & talks','Courses, tutoring, and presentations.')}<div class="document-body"><section>${sectionTitle('1','Teaching')}<p class="course-code">CURRENT · WASHINGTON UNIVERSITY IN ST. LOUIS</p><h3 class="large-heading">Focused Physics I</h3><p class="lead">Teaching assistant for Physics 1760, an honors-level introduction to physics.</p><p class="quiet-note">Office hours, course links, and resources will be added here.</p>
-${item('FEB 2023–MAY 2024','Undergraduate Course Assistant','Princeton University · PHY103 Introductory Mechanics and PHY104 Introductory Electromagnetism. Hosted office hours, led problem sessions, and prepared solution sets.')}
-${item('SEP 2023–DEC 2024','Physics Department Peer Tutor','Princeton University · Classical Mechanics and Quantum Mechanics I & II. Tutored students in problem-solving, conceptual reasoning, and analytical skills.')}</section><section id="talks">${sectionTitle('2','Talks')}<div class="upcoming-talk"><span class="entry-date">OCTOBER 2026 · PLANNED</span><p>A first talk is on the way. Title and details to follow.</p></div></section></div>`;
+const anchor = title => title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+export function documentPage(site, n, content, { projects = false } = {}) {
+  const sections = content.sections.map((section, i) => {
+    const entries = section.entries.map((entry, j) => projects
+      ? `<div class="project-feature${i === 0 && j === 0 ? '' : ' text-only'}">${i === 0 && j === 0 ? paperArt(entry.title) : ''}<div><p class="eyebrow">${esc(entry.label)}</p><h3>${esc(entry.title)}</h3>${entry.html}</div></div>`
+      : item(entry)).join('');
+    return `<section id="${esc(anchor(section.title))}">${sectionTitle(i + 1,esc(section.title))}<div class="section-copy">${section.html}</div>${entries}${section.after ? `<div class="section-after">${section.after}</div>` : ''}</section>`;
+  }).join('');
+  return `${pageHeading(site,n,content.title,content.description)}<div class="document-body">${content.html}${sections}</div>`;
 }
 
-export function making() {
-  return `${pageHeading('04','Things I make','Software, small tools, and other experiments.')}<div class="document-body"><section>${sectionTitle('1','Niceties')}<p class="lead">Small pieces of software that make everyday work a little more pleasant.</p><div class="project-feature"><div class="paper-night-art" aria-label="An illustration of a research paper in a dark reading palette"><div class="mini-paper"><span class="mini-moon">☾</span><span class="mini-paper-label">PAPER NIGHT</span><i></i><i></i><i></i><div class="mini-equation">Z = ∑ e<sup>−βE</sup></div><i></i><i></i></div></div><div><p class="eyebrow">BROWSER EXTENSION · LOCAL PROTOTYPE</p><h3>Paper Night</h3><p>Dark reading palettes for INSPIRE, arXiv, and bioRxiv. Cool Midnight and warm Lamplight, with independent controls for each site.</p><p>Figures retain their original colors. Settings stay in your browser.</p><span class="project-status"><span></span> In development</span></div></div></section></div>`;
+function paperArt(title) {
+  return `<div class="paper-night-art" aria-label="An illustration of a research paper in a dark reading palette"><div class="mini-paper"><span class="mini-moon">☾</span><span class="mini-paper-label">${esc(title)}</span><i></i><i></i><i></i><div class="mini-equation">Z = ∑ e<sup>−βE</sup></div><i></i><i></i></div></div>`;
 }
 
-export function writing(posts) {
-  const rows = entries => entries.map(post => `<a href="${post.slug}.html" class="post-row"><span class="post-meta">${esc(post.kind || post.date)}</span><div><h3>${esc(post.title)}</h3><p>${esc(post.description || '')}</p></div><span aria-hidden="true">↗</span></a>`).join('');
-  const informal = posts.filter(post => post.section !== 'academic');
-  const academic = posts.filter(post => post.section === 'academic');
-  return `${pageHeading('02','Writings','Posts, reflections, and academic writing.')}<div class="document-body"><section id="posts">${sectionTitle('1','Posts & reflections')}<p>Thoughts in progress, observations, and longer pieces.</p><div class="post-list">${informal.length ? rows(informal) : '<p class="empty-inline">No posts yet.</p>'}</div></section><section id="academic">${sectionTitle('2','Academic writing')}<p>Research writing, expositions, and calculations.</p><div class="post-list">${academic.length ? rows(academic) : '<p class="empty-inline">Academic pieces will appear here.</p>'}</div><p class="quiet-note">The equation specimen is demonstration copy, not a piece by Rafael.</p></section></div>`;
+const rows = entries => entries.map(post => `<a href="${post.slug}.html" class="post-row"><span class="post-meta">${esc(post.kind || post.date)}</span><div><h3>${esc(post.title)}</h3><p>${esc(post.description || '')}</p>${post.sample ? '<p class="quiet-note">Sample writing for preview.</p>' : ''}</div><span aria-hidden="true">↗</span></a>`).join('');
+
+export function writing(site, content, posts) {
+  const groups = [['posts', posts.filter(post => post.section !== 'academic')], ['academic', posts.filter(post => post.section === 'academic')]];
+  const sections = groups.map(([id, entries], i) => {
+    const section = content.sections[i];
+    return `<section id="${id}">${sectionTitle(i + 1,esc(section.title))}${section.html}${section.entries.map(item).join('')}${section.after}<div class="post-list">${entries.length ? rows(entries) : '<p class="empty-inline">No pieces yet.</p>'}</div></section>`;
+  }).join('');
+  return `${pageHeading(site,'02',content.title,content.description)}<div class="document-body">${content.html}${sections}</div>`;
 }
 
 export function article(post) {

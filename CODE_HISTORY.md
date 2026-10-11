@@ -48,3 +48,11 @@ Compatibility: Node 22 or newer for building. The Windows preview launcher can u
 - Saved the user's selected preview portrait as `public/portrait.jpg` and connected it to the site configuration, preserving the photo after removing the browser-only preview tools.
 - Preserved the sample writing at the user's request. Added a regression check for public pages without design controls and for a configured portrait still rendering.
 - The user connected the repository and confirmed successful GitHub Pages publication after running the workflow. The earlier README page was resolved through that deployment; no further hosting change was needed.
+
+## 2026-10-11 — Independently editable page content
+
+- Moved the homepage bio into `content/home.md`, containing only the two paragraphs. Moved activity summaries, research, teaching/talks, software descriptions, and Writings introductions into separate Markdown files so routine edits no longer require navigating HTML template strings.
+- Retained the static GitHub Pages workflow and existing appearance. Used the installed Markdown renderer rather than introducing a CMS, account, or new dependency. Standard section headings and a documented `### label | title` convention preserve the timeline layout; token-based parsing keeps headings inside code examples intact.
+- Connected identity, affiliation, masthead, footer, and CV date to `content/site.json`. Added a direct-link editing guide covering GitHub commits, local edits, math, new writings, and replacing the CV or portrait.
+- Derived homepage recent posts and sample indicators from writing metadata. Editing or deleting the sample no longer requires modifying tests or removing a hardcoded reference from another page. Reserved main-page filenames prevent a new writing from overwriting navigation destinations.
+- Replaced checks that pinned biographical copy with fixture-based rendering and an isolated full-build test that changes content, adds a post, then deletes it. External links in author text are allowed; local asset/link checks remain in place.

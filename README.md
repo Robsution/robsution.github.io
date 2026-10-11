@@ -2,6 +2,8 @@
 
 A preprint-inspired personal website for Rafael Arturo Coca Salazar, published at https://robsution.github.io/. This is an independent project inside `niceties/personal-site`; it does not modify the Paper Night extension.
 
+**To change your homepage blurb, [edit content/home.md on GitHub](https://github.com/Robsution/robsution.github.io/edit/main/content/home.md).** It contains just the paragraphs. Commit the edit to `main` and GitHub publishes it automatically. See the [editing guide](EDITING.md) for the other pages, writings, CV, and portrait.
+
 ## Try it
 
 The preview is at **http://127.0.0.1:4186** while the local server is running. The chosen appearance is Crimson Text, Paper with blue links and burgundy contours, and space for the portrait at right. The design explorer and photo-picker controls are disabled. Pages use the chosen appearance directly, without loading scripts that restore earlier browser preferences.
@@ -41,15 +43,21 @@ The talks section has a planned October 2026 entry awaiting its title and detail
 
 ## Edit content
 
-- `content/site.json`: identity, default design, portrait filename, preview controls, and CV filename.
-- `tools/templates.mjs`: page content and shared HTML templates.
-- `content/writing/*.md`: prose posts. Use a lowercase hyphenated filename and the metadata shape in the sample.
+- `content/home.md`: homepage bio, as plain Markdown paragraphs.
+- `content/currently.md`: homepage activity summaries and links.
+- `content/research.md`, `teaching.md`, `making.md`: page titles, introductions, and entries.
+- `content/writings.md`: headings and introductions for the writing collections.
+- `content/writing/*.md`: individual posts and academic writing. Add, edit, or remove files without changing templates or tests.
+- `content/site.json`: personal details, default design, portrait filename, preview controls, CV filename, and CV display date.
+- `tools/content.mjs`: Markdown and metadata parsing; `tools/templates.mjs`: shared layout only; `tools/build.mjs`: static site generation.
 - `src/assets/style.css`: all layouts, themes, print, and responsive styles.
 - `src/assets/site.js`: design controls and local portrait previews.
 - `public/`: public files copied into `dist/assets/`. Add a permanent portrait here and set `portrait` to its filename in the configuration.
 - `dist/`: generated site. Rebuild after editing source; do not edit generated pages directly.
 
 Set `section: posts` (the default) or `section: academic` in each post’s metadata to choose its Writings section. Posts use `$...$` for inline equations and `$$` on separate lines for display equations. Invalid LaTeX stops the build. The post pipeline accepts trusted author-written Markdown, including HTML; it is not a public upload service. The metadata format is deliberately simple `key: value` lines rather than full YAML.
+
+The same Markdown and math renderer handles page text. Page sections use `## Heading`; dated entries use `### DATE | Title` to retain the timeline layout. See [EDITING.md](EDITING.md) for copyable examples and direct editing links. The homepage lists the latest three informal writings automatically; sample entries are marked with `sample: true` and omitted there.
 
 ## Publish with GitHub Pages
 
@@ -73,13 +81,13 @@ The repository is [robsution/robsution.github.io](https://github.com/robsution/r
 
 Later updates only need a commit and push to `main`; GitHub rebuilds and publishes automatically. A repository with another name also works, with the site under `https://YOUR-USERNAME.github.io/REPOSITORY/`, because all site paths are relative.
 
-The customizer is disabled with `previewTools: false` in `content/site.json`; its scripts and photo-picker controls are omitted from the generated pages. The sample article remains available for Rafael to edit. A permanent portrait goes in `public/`, with its filename set in the same configuration. If the specimen article is removed, update its corresponding test in `tests/site.test.mjs` as well.
+The customizer is disabled with `previewTools: false` in `content/site.json`; its scripts and photo-picker controls are omitted from the generated pages. The sample article remains available for Rafael to edit or delete. A permanent portrait goes in `public/`, with its filename set in the same configuration. Changes committed on GitHub publish automatically; pull them before making further edits in a local checkout.
 
 See [GitHub’s Pages guide](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site), [KaTeX’s rendering documentation](https://katex.org/docs/node.html), and the separate [decision history](CODE_HISTORY.md).
 
 ## Verification
 
-`npm test` checks Markdown/math parsing, literal code examples, malformed input, generated page links/assets, historical/specimen labels, contrast for all accent/surface combinations, Writings ordering, and the combined teaching history. Build before testing. Browser verification covers appearance changes, persistence across navigation, portrait previews, desktop and phone widths, equation display, font switching, independent motif color, and the sticky CV download. Browser observations are recorded in `REVIEW.md`.
+`npm test` checks Markdown/math parsing, page sections and dated entries, literal code examples, malformed input, generated page links/assets, configurable CV links, contrast, Writings ordering, sample labels, and public pages without design controls. An isolated build test changes the bio and identity, adds a post, then deletes it and rebuilds to verify the full editing workflow. Tests use fixtures for editable copy, so normal content changes require no test edits. Build before testing. Browser observations are recorded in `REVIEW.md`.
 
 
 Typography references: [Newsreader](https://github.com/productiontype/Newsreader), [Spectral](https://github.com/productiontype/Spectral), [Alegreya](https://github.com/huertatipografica/Alegreya), and [Crimson Text](https://github.com/google/fonts/tree/main/ofl/crimsontext). Fonts are packaged locally with their licenses.

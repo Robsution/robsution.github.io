@@ -1,5 +1,9 @@
 {
   "name": "Rafael Arturo Coca Salazar",
+  "shortName": "R. A. Coca Salazar",
+  "givenNames": "Rafael Arturo",
+  "familyName": "Coca Salazar",
+  "location": "St. Louis, Missouri",
   "email": "rafael.coca.sal@gmail.com",
   "role": "Physics PhD student · Arthur L. Hughes Fellow",
   "affiliation": "Washington University in St. Louis",
@@ -12,5 +16,6 @@
   "portrait": "portrait.jpg",
   "portraitAlt": "Rafael Arturo Coca Salazar",
   "previewTools": false,
-  "cvFile": "cv-2026-05.pdf"
+  "cvFile": "cv-2026-05.pdf",
+  "cvDate": "May 2026"
 }

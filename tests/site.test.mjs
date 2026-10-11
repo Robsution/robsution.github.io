@@ -1,13 +1,16 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile, readdir, access } from 'node:fs/promises';
+import { readFile, readdir, access, mkdir, mkdtemp, cp, writeFile, unlink, rm } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
-import { parsePost } from '../tools/content.mjs';
-import { writing, shell, home } from '../tools/templates.mjs';
+import { parsePost, parsePage, escapeHtml } from '../tools/content.mjs';
+import { writing, shell, home, documentPage } from '../tools/templates.mjs';
+import { buildSite } from '../tools/build.mjs';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const dist=path.join(root,'dist');
+const writingCopy=parsePage('---\ntitle: Writings\ndescription: A collection\n---\n## Informal\n\nAn introduction.\n\n## Academic\n\nAnother introduction.');
+const homeCopy={home:'<p>An editable bio.</p>',currently:{sections:[]},writings:writingCopy};
 
 test('Markdown renders inline and display equations with accessible MathML',()=>{
   const result=parsePost('---\ntitle: Test\ndate: 2026-10-10\n---\nA value $x^2$.\n\n$$\nZ=\\sum_i e^{-E_i}\n$$\n','test');
@@ -24,9 +27,11 @@ test('Malformed content fails the build instead of silently publishing',()=>{
   assert.throws(()=>parsePost('No metadata','test'));
   assert.throws(()=>parsePost('---\ntitle: Test\ndate: soon\n---\ntext','test'));
   assert.throws(()=>parsePost('---\ntitle: Test\ndate: 2026-10-10\n---\ntext','../escape'));
+  assert.throws(()=>parsePost('---\ntitle: Test\ndate: 2026-10-10\n---\ntext','research'),/reserved/);
   assert.throws(()=>parsePost('---\ntitle: Test\ndate: 2026-10-10\n---\n$\\notARealCommand{x}$','test'));
 });
 test('All built page links and resources resolve, including under a project subpath',async()=>{
+  const site=JSON.parse(await readFile(path.join(root,'content/site.json'),'utf8'));
   const pages=(await readdir(dist)).filter(name=>name.endsWith('.html'));
   for(const required of ['index.html','research.html','writing.html','teaching.html','making.html']) assert.ok(pages.includes(required));
   for(const retired of ['talks.html','projects.html','cv.html']) assert.ok(!pages.includes(retired));
@@ -34,41 +39,39 @@ test('All built page links and resources resolve, including under a project subp
     const html=await readFile(path.join(dist,page),'utf8');
     assert.equal((html.match(/<h1[ >]/g)||[]).length,1,`${page} needs one main heading`);
     assert.match(html,/aria-current="page"/);
-    assert.match(html,/<a class="cv-link" href="assets\/cv-2026-05.pdf" download/);
+    assert.ok(html.includes(`<a class="cv-link" href="assets/${escapeHtml(site.cvFile)}" download`));
     assert.doesNotMatch(html,/Physics · WashU|data-writing-label|writingLabel/);
     for(const match of html.matchAll(/(?:src|href)="([^"]+)"/g)){
       const url=match[1];
       if(url.startsWith('mailto:')||url.startsWith('#'))continue;
+      if(/^https?:\/\//.test(url)){ new URL(url); continue; }
       assert.ok(!url.startsWith('/')&&!url.includes('://'),`Asset is not project-relative: ${url}`);
-      const resolved=path.resolve(dist,path.dirname(page),url.split('#')[0]);
+      const resolved=path.resolve(dist,path.dirname(page),decodeURIComponent(url.split(/[?#]/)[0]));
       await access(resolved);
     }
   }
   const css=await readFile(path.join(dist,'assets/style.css'),'utf8');
   for(const match of css.matchAll(/url\(([^)]+)\)/g))await access(path.join(dist,'assets',match[1]));
 });
-test('Specimen and historical CV are clearly identified',async()=>{
-  const article=await readFile(path.join(dist,'typesetting-a-thought.html'),'utf8');
-  assert.match(article,/not an essay or a statement of Rafael/);
+test('The configured CV date and downloadable PDF reach the public site',async()=>{
+  const site=JSON.parse(await readFile(path.join(root,'content/site.json'),'utf8'));
   const home=await readFile(path.join(dist,'index.html'),'utf8');
-  assert.match(home,/Download CV \(May 2026 PDF\)/);
-  const research=await readFile(path.join(dist,'research.html'),'utf8');
-  assert.match(research,/May 2026 CV lists this project as ongoing/);
-  const pdf=await readFile(path.join(dist,'assets/cv-2026-05.pdf'));
+  assert.ok(home.includes(`Download CV (${escapeHtml(site.cvDate)} PDF)`));
+  const pdf=await readFile(path.join(dist,'assets',site.cvFile));
   assert.equal(pdf.subarray(0,5).toString(),'%PDF-');
 });
 
 test('Public pages keep the chosen design without preview controls or preference scripts',async()=>{
   const site=JSON.parse(await readFile(path.join(root,'content/site.json'),'utf8'));
   const publicSite={...site,previewTools:false};
-  const html=shell(publicSite,'index.html','Home',home(publicSite));
+  const html=shell(publicSite,'index.html','Home',home(publicSite,homeCopy,[]));
   assert.doesNotMatch(html,/Explore the design|Try a photograph|Your portrait|portrait-input|assets\/appearance\.js|assets\/site\.js|noindex/);
-  assert.match(html,/data-font="crimsontext"/);
-  assert.match(html,/data-theme="paper"/);
-  assert.match(html,/data-accent="blue"/);
-  assert.match(html,/data-motif-color="burgundy"/);
+  assert.ok(html.includes(`data-font="${site.defaultFont}"`));
+  assert.ok(html.includes(`data-theme="${site.defaultTheme}"`));
+  assert.ok(html.includes(`data-accent="${site.defaultAccent}"`));
+  assert.ok(html.includes(`data-motif-color="${site.defaultMotifColor}"`));
   const withPortrait={...publicSite,portrait:'portrait.jpg'};
-  assert.match(home(withPortrait),/src="assets\/portrait\.jpg"/);
+  assert.match(home(withPortrait,homeCopy,[]),/src="assets\/portrait\.jpg"/);
   for(const page of (await readdir(dist)).filter(name=>name.endsWith('.html'))){
     const built=await readFile(path.join(dist,page),'utf8');
     assert.doesNotMatch(built,/Explore the design|Try a photograph|assets\/appearance\.js|assets\/site\.js/);
@@ -94,7 +97,7 @@ test('Every palette has readable body, secondary, and link text on its surfaces'
 });
 
 test('Writings keeps informal posts before academic pieces regardless of date',()=>{
-  const html=writing([
+  const html=writing({name:'An author'},writingCopy,[
     {slug:'new-paper',title:'Academic example',date:'2026-10-10',section:'academic'},
     {slug:'older-post',title:'Informal example',date:'2026-09-01',section:'posts'}
   ]);
@@ -104,9 +107,65 @@ test('Writings keeps informal posts before academic pieces regardless of date',(
   assert.throws(()=>parsePost('---\ntitle: A post\ndate: 2026-10-10\nsection: typo\n---\nText','a-post'));
 });
 
-test('Combined teaching page preserves both multi-year Princeton roles',async()=>{
-  const html=await readFile(path.join(dist,'teaching.html'),'utf8');
-  for(const text of ['FEB 2023–MAY 2024','SEP 2023–DEC 2024','Undergraduate Course Assistant','Physics Department Peer Tutor','PHY103','PHY104','Quantum Mechanics I & II','id="talks"','OCTOBER 2026 · PLANNED']) assert.ok(html.includes(text),text);
+test('Page Markdown keeps timeline entries, links, notes, equations, and section order',()=>{
+  const content=parsePage('---\r\ntitle: Teaching & talks\r\ndescription: Editable subtitle: including a colon.\r\n---\r\n\r\n## Teaching\r\n\r\nIntro $x^2$.\r\n\r\n### 2024–2026 | A course\r\n\r\nA **description** with a [resource][guide].\r\n\r\n> Office hours: tomorrow.\r\n\r\n```md\r\n## This is a code example\r\n### DATE | Still code\r\n```\r\n\r\n---\r\n\r\nA footnote.\r\n\r\n## Talks\r\n\r\n### 2026 | A talk\r\n\r\nAbstract.\r\n\r\n[guide]: https://example.org/\r\n');
+  const html=documentPage({name:'Test Author'},'03',content);
+  assert.equal(content.sections.length,2);
+  assert.equal(content.sections[0].entries.length,1);
+  assert.match(html,/class="entry-date">2024–2026/);
+  assert.match(html,/<strong>description<\/strong>/);
+  assert.match(html,/href="https:\/\/example.org\/"/);
+  assert.match(html,/<blockquote>/);
+  assert.match(html,/<math xmlns=/);
+  assert.match(html,/class="section-after"><p>A footnote/);
+  assert.match(html,/id="talks"/);
+  assert.ok(html.indexOf('A course')<html.indexOf('A talk'));
+  assert.throws(()=>parsePage('# Extra main heading'),/Use ##/);
+});
+
+test('Editing content, identity, CV date, and adding or deleting writing needs no template or test edits',async()=>{
+  const artifactDir=path.join(root,'artifacts');
+  await mkdir(artifactDir,{recursive:true});
+  const temporary=await mkdtemp(path.join(artifactDir,'editing-test-'));
+  const contentDir=path.join(temporary,'content');
+  const output=path.join(temporary,'dist');
+  try {
+    await cp(path.join(root,'content'),contentDir,{recursive:true});
+    for(const file of await readdir(path.join(contentDir,'writing')))if(file.endsWith('.md'))await unlink(path.join(contentDir,'writing',file));
+    await writeFile(path.join(contentDir,'home.md'),'A **new bio** with a [research link](https://example.org/) and $E=mc^2$.\n\nA second paragraph.');
+    const site=JSON.parse(await readFile(path.join(contentDir,'site.json'),'utf8'));
+    Object.assign(site,{name:'Example Full Name',givenNames:'Example',familyName:'Full Name',shortName:'E. Name',role:'An updated role',affiliation:'A different university',location:'A new city',cvDate:'June 2030'});
+    await writeFile(path.join(contentDir,'site.json'),JSON.stringify(site));
+    const postFile=path.join(contentDir,'writing','a-new-post.md');
+    await writeFile(postFile,'---\ntitle: A new post\ndate: 2030-06-01\nsection: posts\n---\nA new piece.');
+    await buildSite({contentDir,dist:output});
+    const html=await readFile(path.join(output,'index.html'),'utf8');
+    for(const text of ['<strong>new bio</strong>','https://example.org/','<math xmlns=','A second paragraph.','E. Name','Example <span>Full Name</span>','An updated role','A different university','A new city','Download CV (June 2030 PDF)','CV · June 2030','a-new-post.html'])assert.ok(html.includes(text),text);
+    assert.doesNotMatch(html,/No posts yet/);
+    const listing=await readFile(path.join(output,'writing.html'),'utf8');
+    assert.match(listing,/A new post/);
+    assert.doesNotMatch(listing,/Sample writing|equation specimen/);
+    await unlink(postFile);
+    await buildSite({contentDir,dist:output});
+    await assert.rejects(access(path.join(output,'a-new-post.html')));
+    assert.match(await readFile(path.join(output,'index.html'),'utf8'),/No posts yet/);
+    assert.doesNotMatch(await readFile(path.join(output,'writing.html'),'utf8'),/a-new-post|Sample writing/);
+  } finally {
+    // Only remove the test directory created above, inside this repo's ignored artifacts folder.
+    const relative=path.relative(artifactDir,temporary);
+    assert.ok(relative.startsWith('editing-test-')&&!relative.includes(path.sep));
+    await rm(temporary,{recursive:true,force:true});
+  }
+});
+
+test('Sample labels follow the writing metadata and disappear when a piece is made real',()=>{
+  const source='---\ntitle: Example\ndate: 2026-10-10\nsample: true\n---\nExample text.';
+  const sample=parsePost(source,'example');
+  assert.match(writing({name:'Author'},writingCopy,[sample]),/Sample writing for preview/);
+  assert.doesNotMatch(home({givenNames:'An',familyName:'Author'},homeCopy,[sample]),/example.html/);
+  const actual=parsePost(source.replace('sample: true','sample: false'),'example');
+  assert.doesNotMatch(writing({name:'Author'},writingCopy,[actual]),/Sample writing for preview/);
+  assert.match(home({givenNames:'An',familyName:'Author'},homeCopy,[actual]),/example.html/);
 });
 
 test('New font preferences and independent motif color survive initialization',async()=>{
