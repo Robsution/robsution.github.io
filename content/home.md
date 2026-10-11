@@ -1,3 +1,3 @@
-I’m interested in theoretical biophysics and condensed matter, and I’m currently exploring a small project with Mikhail Tikhonov.
+I’m interested in theoretical biophysics and condensed matter, and currently exploring projects with Mikhail Tikhonov and Zohar Nussinov. I also have ongoing projects in ML with Saori Pastore and the US Muon Collider Collaboration.
 
-My earlier work spans lattice QED, particle physics, and machine learning. I also teach physics and make small pieces of software.
+My earlier work spans 2+1D lattice gauge theories, particle physics, and machine learning. I enjoy teaching physics and make small pieces of software as well.
