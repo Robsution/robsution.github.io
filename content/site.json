@@ -9,8 +9,8 @@
   "defaultLayout": "margin",
   "defaultMotif": "contours",
   "defaultMotifColor": "burgundy",
-  "portrait": null,
+  "portrait": "portrait.jpg",
   "portraitAlt": "Rafael Arturo Coca Salazar",
-  "previewTools": true,
+  "previewTools": false,
   "cvFile": "cv-2026-05.pdf"
 }

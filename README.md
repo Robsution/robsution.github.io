@@ -1,12 +1,12 @@
 # Rafael’s personal site
 
-A local, preprint-inspired website prototype for Rafael Arturo Coca Salazar. This is an independent project inside `niceties/personal-site`; it does not modify the Paper Night extension.
+A preprint-inspired personal website for Rafael Arturo Coca Salazar, published at https://robsution.github.io/. This is an independent project inside `niceties/personal-site`; it does not modify the Paper Night extension.
 
 ## Try it
 
-The preview is at **http://127.0.0.1:4186** while the local server is running. Select **Explore the design** at the bottom right to compare three neutral surfaces (Paper, Gray, Night), three accent colors (Blue, Burgundy, Graphite), and eight serif typefaces. The current comparison highlights Newsreader, Spectral, Alegreya, and Crimson Text beside EB Garamond and Crimson Pro; Source Serif 4 and Libre Baskerville remain under Earlier comparisons. Each card uses the same capital/lowercase sample. You can also toggle the portrait and choose contours, a lattice, or no motif. Motif color is independent of links. The chosen defaults are Crimson Text, Paper with blue links and burgundy contours, and the portrait at right.
+The preview is at **http://127.0.0.1:4186** while the local server is running. The chosen appearance is Crimson Text, Paper with blue links and burgundy contours, and space for the portrait at right. The design explorer and photo-picker controls are disabled. Pages use the chosen appearance directly, without loading scripts that restore earlier browser preferences.
 
-Try a JPG, PNG, or WebP portrait on Home. The preview resizes it locally and keeps it in this tab’s session storage, never uploading it. The Remove photo button clears it. Appearance preferences persist in this browser. Copy this combination produces a short description to paste into the design conversation.
+The selected portrait is saved in `public/portrait.jpg`, so it appears on every device. To replace it, add a JPG, PNG, or WebP to `public/` and set `portrait` to its filename in `content/site.json`.
 
 On this Windows computer, start a stopped preview with:
 
@@ -37,7 +37,7 @@ npm run preview
 - Local font and equation assets: the site makes no external requests and has no accounts, analytics, or backend.
 - Relative paths suitable for either a GitHub Pages root domain or a repository subpath.
 
-The talks section has a planned October 2026 entry awaiting its title and details. The Princeton course-assistant role is dated February 2023–May 2024; peer tutoring is dated September 2023–December 2024. There are no invented talks, publications, live software releases, advisor appointments, or biographical claims. No portrait has been supplied yet. The contact email comes from the supplied CV. The downloaded original CV includes its original referee section; review that file before making the site public.
+The talks section has a planned October 2026 entry awaiting its title and details. The Princeton course-assistant role is dated February 2023–May 2024; peer tutoring is dated September 2023–December 2024. There are no invented talks, publications, live software releases, advisor appointments, or biographical claims. The selected portrait is included as a permanent asset. The contact email and original referee section remain in the supplied May 2026 CV.
 
 ## Edit content
 
@@ -53,10 +53,10 @@ Set `section: posts` (the default) or `section: academic` in each post’s metad
 
 ## Publish with GitHub Pages
 
-This prototype has **not been published** and is not connected to a GitHub repository. The included [publishing workflow](.github/workflows/pages.yml) installs dependencies with Node 24, builds and checks the site, and publishes `dist/` whenever changes are pushed to `main`. Only a successful build and test run can deploy. No hosting credentials need to be added.
+The repository is [robsution/robsution.github.io](https://github.com/robsution/robsution.github.io). The included [publishing workflow](.github/workflows/pages.yml) installs dependencies with Node 24, builds and checks the site, and publishes `dist/` whenever changes are pushed to `main`. Only a successful build and test run can deploy. No hosting credentials need to be added. The following initial setup is retained for moving the source to a new repository; the current repository is already connected.
 
 1. On GitHub, create a public repository named `YOUR-USERNAME.github.io`, replacing `YOUR-USERNAME` with your GitHub username. Leave its README, license, and gitignore options empty because this folder already contains the source files.
-2. In PowerShell, run the following from this site's folder. Replace both username placeholders in the remote URL before running it. These commands are for the initial setup of this currently unversioned folder:
+2. In PowerShell, run the following from an unversioned copy of this site's folder. Replace both username placeholders in the remote URL before running it. These commands are for initial setup only; do not rerun them in the current connected repository:
 
    ```powershell
    Set-Location 'C:\Users\rafae\projects\niceties\personal-site'
@@ -73,9 +73,7 @@ This prototype has **not been published** and is not connected to a GitHub repos
 
 Later updates only need a commit and push to `main`; GitHub rebuilds and publishes automatically. A repository with another name also works, with the site under `https://YOUR-USERNAME.github.io/REPOSITORY/`, because all site paths are relative.
 
-The current version still includes design controls and sample copy. To hide the customizer when ready, set `previewTools` to `false` in `content/site.json`. A permanent portrait goes in `public/`, with its filename set in the same configuration. The specimen article, provisional copy, and May 2026 CV can be revised before the first push. If the specimen article is removed, update its corresponding test in `tests/site.test.mjs` as well.
-
-The explorer preference key can be cleared in browser storage if testing different baked-in defaults. The current key is `rafael-site-design-v2`, so superseded palette and section-name preferences do not affect this version. Query parameters such as `?theme=gray&font=crimson&accent=burgundy&motif=lattice` override remembered appearance for that visit.
+The customizer is disabled with `previewTools: false` in `content/site.json`; its scripts and photo-picker controls are omitted from the generated pages. The sample article remains available for Rafael to edit. A permanent portrait goes in `public/`, with its filename set in the same configuration. If the specimen article is removed, update its corresponding test in `tests/site.test.mjs` as well.
 
 See [GitHub’s Pages guide](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site), [KaTeX’s rendering documentation](https://katex.org/docs/node.html), and the separate [decision history](CODE_HISTORY.md).
 

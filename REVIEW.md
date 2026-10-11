@@ -35,3 +35,10 @@ The portrait currently shown is a placeholder. The bio is a draft, the article a
 - Verified Match links gives the motif the link color, then switched the motif to burgundy while links remained blue. Navigated between Research and Home and confirmed the font and independent color persisted.
 - Inspected the font picker at 390 × 844. Fixed initial intrinsic-width overflow; the final panel's scroll width equals its client width, and all six primary specimen lines fit their cards.
 - The standard static build and all nine tests pass, including new preference-initialization coverage.
+
+## Public appearance — 2026-10-11
+
+- The static build and all ten checks pass, including public pages without designer controls or scripts that restore stored preview settings.
+- Reloaded the homepage and confirmed Crimson Text is applied, both designer and photo-picker controls are absent, and the portrait loads from `assets/portrait.jpg`.
+- Saved the selected browser preview photo as a permanent site asset. The sample writing remains unchanged.
+- Screenshot: `artifacts/home-without-designer.png`.

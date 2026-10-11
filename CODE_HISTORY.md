@@ -41,3 +41,10 @@ Compatibility: Node 22 or newer for building. The Windows preview launcher can u
 
 - Added a GitHub Actions workflow that builds with Node 24, runs the existing checks, and deploys only the generated `dist/` directory after a successful build. Publishing runs on pushes to `main` or a manual run on that branch.
 - Documented initial repository setup, the GitHub Pages source setting, and future updates. The website source belongs at the root of its own repository, separate from Niceties. This prepares deployment locally; it does not create a repository, push source, or publish the site.
+
+## 2026-10-11 — Remove the public design explorer
+
+- Disabled the customizer and omitted its appearance and photo-preview scripts from generated pages, so stored browser preferences cannot override the chosen design. Removed the photo-picker prompt as well.
+- Saved the user's selected preview portrait as `public/portrait.jpg` and connected it to the site configuration, preserving the photo after removing the browser-only preview tools.
+- Preserved the sample writing at the user's request. Added a regression check for public pages without design controls and for a configured portrait still rendering.
+- The user connected the repository and confirmed successful GitHub Pages publication after running the workflow. The earlier README page was resolved through that deployment; no further hosting change was needed.

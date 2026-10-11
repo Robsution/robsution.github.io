@@ -5,7 +5,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
 import { parsePost } from '../tools/content.mjs';
-import { writing } from '../tools/templates.mjs';
+import { writing, shell, home } from '../tools/templates.mjs';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const dist=path.join(root,'dist');
 
@@ -56,6 +56,23 @@ test('Specimen and historical CV are clearly identified',async()=>{
   assert.match(research,/May 2026 CV lists this project as ongoing/);
   const pdf=await readFile(path.join(dist,'assets/cv-2026-05.pdf'));
   assert.equal(pdf.subarray(0,5).toString(),'%PDF-');
+});
+
+test('Public pages keep the chosen design without preview controls or preference scripts',async()=>{
+  const site=JSON.parse(await readFile(path.join(root,'content/site.json'),'utf8'));
+  const publicSite={...site,previewTools:false};
+  const html=shell(publicSite,'index.html','Home',home(publicSite));
+  assert.doesNotMatch(html,/Explore the design|Try a photograph|Your portrait|portrait-input|assets\/appearance\.js|assets\/site\.js|noindex/);
+  assert.match(html,/data-font="crimsontext"/);
+  assert.match(html,/data-theme="paper"/);
+  assert.match(html,/data-accent="blue"/);
+  assert.match(html,/data-motif-color="burgundy"/);
+  const withPortrait={...publicSite,portrait:'portrait.jpg'};
+  assert.match(home(withPortrait),/src="assets\/portrait\.jpg"/);
+  for(const page of (await readdir(dist)).filter(name=>name.endsWith('.html'))){
+    const built=await readFile(path.join(dist,page),'utf8');
+    assert.doesNotMatch(built,/Explore the design|Try a photograph|assets\/appearance\.js|assets\/site\.js/);
+  }
 });
 
 test('Every palette has readable body, secondary, and link text on its surfaces',async()=>{
