@@ -1,0 +1,29 @@
+{
+  "name": "rafael-personal-site",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A preprint-inspired personal website and local appearance explorer.",
+  "scripts": {
+    "build": "node tools/build.mjs",
+    "preview": "node tools/serve.mjs",
+    "test": "node --test tests/*.test.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@fontsource/alegreya": "5.3.0",
+    "@fontsource/crimson-pro": "5.3.0",
+    "@fontsource/crimson-text": "5.3.0",
+    "@fontsource/dm-sans": "5.3.0",
+    "@fontsource/eb-garamond": "5.3.0",
+    "@fontsource/libre-baskerville": "5.3.0",
+    "@fontsource/newsreader": "5.3.0",
+    "@fontsource/source-serif-4": "5.3.0",
+    "@fontsource/spectral": "5.3.0",
+    "katex": "0.18.10",
+    "marked": "18.1.0",
+    "marked-katex-extension": "5.1.13"
+  }
+}
