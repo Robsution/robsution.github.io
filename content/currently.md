@@ -1,8 +1,16 @@
 ## Currently
 
-### RESEARCH | Biophysics & condensed matter
+### RESEARCH | Biophysics 
 
-An exploratory project with Mikhail Tikhonov at WashU.
+Analyzing bacterial auxotrophy data with Mikhail Tikhonov at WashU
+
+### | Condensed Matter
+
+Benchmarking local solving of p-interacting spin glasses
+
+### | ML
+
+Using Neural Networks and Generative architectures to predict observables and supplant expensive simulations
 
 ### TEACHING | Focused Physics I
 
