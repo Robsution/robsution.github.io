@@ -5,9 +5,12 @@ description: From quantum fields toward living systems.
 
 ## Current direction
 
-My current interests lie between theoretical biophysics and condensed matter. I’m exploring a small project with Mikhail Tikhonov at WashU.
+My current interests are in mathematical approaches to distill descriptions of complex systems, incidentally landing me at the intersection of theoretical condensed matter and biophysics. 
 
-> This is an exploratory project; I have not formally joined the group.
+If one is to believe our world is directly reflective of the theories describing it (up to some approximation) then life at all levels must also condense to some mathematical system. Life is, for better or worse, noisy, and thus figuring out its workings is difficult. The forefront of my latest work has been in carefully pre-inspecting data before it is ever run through an analytical pipeline. Systematic discrepancies can lead to erroneous results; but even small, consistent discrepancies can uncover new phenomena. Another unusual feature of modern science is data abundance, and determining how to best exploit this abundance to reveal correlated artifacts in systems is also a research objective of mine.
+
+My current work is in data analyses of bacterial auxotrophy, p-spin glass local approximations and machine learning applications to physics.
+
 
 ## Selected earlier work
 
@@ -33,4 +36,3 @@ Princeton University. Reviewed axion detection experiments and investigated head
 
 ---
 
-¹ The May 2026 CV lists this project as ongoing. Its present status still needs updating.
