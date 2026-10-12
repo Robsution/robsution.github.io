@@ -30,7 +30,7 @@ export function shell(site, page, title, content, { post = false } = {}) {
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${esc(title)} · ${esc(site.name)}</title><meta name="description" content="${esc(`${site.name} — ${site.role}, ${site.affiliation}.`)}"><meta name="color-scheme" content="light dark">${site.previewTools?'<meta name="robots" content="noindex, nofollow">':''}<link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="assets/katex/katex.min.css"><link rel="stylesheet" href="assets/style.css">${site.previewTools?'<script src="assets/appearance.js"></script><script type="module" src="assets/site.js"></script>':''}</head>
 <body><a class="skip-link" href="#main">Skip to content</a>
 <div class="page-shell"><header class="site-header"><div class="running-head"><a class="site-name" href="index.html" aria-label="${esc(site.name)} home">${esc(site.shortName)}</a><a class="cv-link" href="assets/${esc(site.cvFile)}" download aria-label="Download CV (${esc(site.cvDate)} PDF)" title="Download CV · ${esc(site.cvDate)}">CV <span aria-hidden="true">↓</span></a></div><nav aria-label="Main navigation">${nav}</nav></header>
-<main id="main">${content}</main>
+<main id="main"${page === 'research.html' ? ' class="research-page"' : ''}>${content}</main>
 <footer class="site-footer"><span>${esc(site.name)} <span class="footer-dot">·</span> ${esc(site.location)}</span><a href="mailto:${esc(site.email)}">Email ↗</a><a href="assets/${esc(site.cvFile)}" download>CV · ${esc(site.cvDate)} ↓</a></footer></div>
 ${site.previewTools ? explorer(site) : ''}
 </body></html>`;

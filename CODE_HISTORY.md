@@ -56,3 +56,9 @@ Compatibility: Node 22 or newer for building. The Windows preview launcher can u
 - Connected identity, affiliation, masthead, footer, and CV date to `content/site.json`. Added a direct-link editing guide covering GitHub commits, local edits, math, new writings, and replacing the CV or portrait.
 - Derived homepage recent posts and sample indicators from writing metadata. Editing or deleting the sample no longer requires modifying tests or removing a hardcoded reference from another page. Reserved main-page filenames prevent a new writing from overwriting navigation destinations.
 - Replaced checks that pinned biographical copy with fixture-based rendering and an isolated full-build test that changes content, adds a post, then deletes it. External links in author text are allowed; local asset/link checks remain in place.
+
+## 2026-10-11 — Research reading hierarchy
+
+- Pulled Rafael's new Markdown edits before changing the design. His longer research introduction was inheriting the 21 px lead-paragraph style throughout, making the text oversized.
+- Gave Research a scoped reading layout with 17 px overview text (16 px on phones), 16 px project descriptions, and a narrower maximum content width. Renamed “Current direction” to “Research interests”; preserved the newly authored paragraphs.
+- Added burgundy section headings, a small title rule, a faint burgundy tint and margin rule around the overview, and blue date labels. Kept the existing Paper and Crimson Text design and the other pages' typography.

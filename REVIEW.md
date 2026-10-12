@@ -50,3 +50,10 @@ The portrait currently shown is a placeholder. The bio is a draft, the article a
 - Visually checked teaching and making layouts. Confirmed both Princeton teaching roles and their dates, the planned talk, five earlier research entries, and the CV footnote survived extraction to Markdown.
 - Checked all five main pages at 390 × 844: no horizontal overflow and the CV button remains visible. Reset the temporary viewport afterward.
 - Saved `artifacts/editable-home.png`. The local preview needed restarting before inspection; no hosting configuration changed.
+
+## Research typography and color — 2026-10-11
+
+- Pulled six author commits before editing, including the expanded research statement. The research Markdown diff changes only “Current direction” to “Research interests.”
+- Built all six pages and passed the twelve existing checks. Research-specific styles reduce overview text from 21 px to 17 px (16 px on phones) and entry text from 17 px to 16 px; the new class is applied only to Research.
+- Added burgundy section titles and overview treatment, blue dates, and a shorter title rule. These changes use the existing palette variables.
+- Visual inspection could not be completed: the browser tool rejected access to the existing localhost preview tab under its URL policy. No screenshot or responsive browser result is claimed for this pass.

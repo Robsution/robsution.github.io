@@ -10,6 +10,8 @@ The preview is at **http://127.0.0.1:4186** while the local server is running. T
 
 The selected portrait is saved in `public/portrait.jpg`, so it appears on every device. To replace it, add a JPG, PNG, or WebP to `public/` and set `portrait` to its filename in `content/site.json`.
 
+The Research page uses a compact reading layout: regular-sized introductory text, burgundy section headings and a lightly tinted overview, with blue dates separating the earlier research entries. Its text and headings remain editable in `content/research.md`.
+
 On this Windows computer, start a stopped preview with:
 
 ```powershell

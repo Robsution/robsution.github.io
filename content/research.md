@@ -3,7 +3,7 @@ title: Research
 description: From quantum fields toward living systems.
 ---
 
-## Current direction
+## Research interests
 
 My current interests are in mathematical approaches to distill descriptions of complex systems, incidentally landing me at the intersection of theoretical condensed matter and biophysics. 
 
