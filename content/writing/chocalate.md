@@ -1,5 +1,5 @@
 ---
-title: Chocalate
+title: Chocolate
 date: 2026-10-05
 section: posts
 publication: Pittsburgh Review of Books

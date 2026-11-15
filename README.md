@@ -11,7 +11,7 @@ A preprint-inspired academic website for Rafael Arturo Coca Salazar, published a
 - Five main pages: Home, Research, Writings, Teaching & talks, and Things I make.
 - Research and teaching updated from the supplied November 2026 CV. Current work includes microbial consumer–resource models, conditional auxotrophy, three-spin glasses, and nuclear-response emulators. The muon-collider project is dated September 2025–September 2026.
 - The October 2026 workshop **poster** is listed by title with its collaborators. The project and presentation descriptions distinguish completed results from planned work.
-- [Chocalate](https://pghrev.com/chocalate/), published in the Pittsburgh Review of Books on October 5, 2026, links directly to the publication from Home and Writings. The publisher’s spelling is retained. Academic writing appears below informal pieces.
+- [Chocolate](https://pghrev.com/chocalate/), published in the Pittsburgh Review of Books on October 5, 2026, links directly to the publication from Home and Writings. The display title uses the author's corrected spelling; the publisher's URL is unchanged. Academic writing appears below informal pieces.
 - The November 2026 CV is downloadable unchanged. Site correspondence uses the WashU email from that CV.
 - Paper Night is described as an in-development local prototype, using the current Niceties project documentation. No public installation link or release is invented.
 - The equation specimen remains editable with `draft: true` and is omitted from publication. Markdown, LaTeX, and accessible MathML continue to work for real posts and page content.

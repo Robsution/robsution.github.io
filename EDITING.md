@@ -95,11 +95,11 @@ Use `section: posts` for informal writing, or `section: academic` for research w
 
 Add `draft: true` inside the metadata to keep a piece out of the public site. Remove that line or set it to `false` when ready. Rebuilding also removes an older generated page if you turn it back into a draft.
 
-For writing published elsewhere, add an HTTPS `externalUrl:` and an optional `publication:`. The list will link directly to the publisher, so you do not need to copy the essay into the file. For example, [Chocalate](https://github.com/Robsution/robsution.github.io/edit/main/content/writing/chocalate.md) uses:
+For writing published elsewhere, add an HTTPS `externalUrl:` and an optional `publication:`. The list will link directly to the publisher, so you do not need to copy the essay into the file. For example, [Chocolate](https://github.com/Robsution/robsution.github.io/edit/main/content/writing/chocalate.md) uses:
 
 ```md
 ---
-title: Chocalate
+title: Chocolate
 date: 2026-10-05
 section: posts
 publication: Pittsburgh Review of Books

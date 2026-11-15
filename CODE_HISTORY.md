@@ -99,3 +99,7 @@ Compatibility: Node 22 or newer for building. The Windows preview launcher can u
 - Added validated HTTPS external-writing metadata and explicit draft handling. Neither external entries nor drafts create local article pages; turning a published article into a draft removes stale output on rebuild. Extended existing editing-workflow tests to cover these cases and all fragment links.
 - Kept prose in Markdown, including the homepage research, teaching, and software summaries. Paper Night's updated description follows the adjacent project's current README and remains labeled in development. Added no unprovided slides, paper downloads, software release links, or formal group appointment.
 - Preserved the local design history and snapshots, and refreshed the editing guide for the selected layout, externally published writing, and drafts. GitHub Pages continues to deploy only the built `dist/` after checks pass.
+
+## 2026-11-14 — Correct the essay title
+
+- Changed the displayed title to Chocolate at the author's request. Home and Writings use the same entry; the publisher URL and source filename remain unchanged. Updated the editing example to match.
