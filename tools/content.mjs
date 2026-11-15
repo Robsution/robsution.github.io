@@ -73,5 +73,10 @@ export function parsePost(source, slug) {
   if (!meta.title || !/^\d{4}-\d{2}-\d{2}$/.test(meta.date ?? '')) throw new Error(`A title and ISO date are required in ${slug}`);
   const section = meta.section || 'posts';
   if (!['posts','academic'].includes(section)) throw new Error(`Use section: posts or section: academic in ${slug}`);
-  return { ...meta, sample: meta.sample === 'true', section, slug, html: renderMarkdown(body) };
+  if (meta.externalUrl) {
+    let url;
+    try { url = new URL(meta.externalUrl); } catch { throw new Error(`Use a full HTTPS externalUrl in ${slug}`); }
+    if (url.protocol !== 'https:' || url.username || url.password) throw new Error(`Use a full HTTPS externalUrl without credentials in ${slug}`);
+  }
+  return { ...meta, sample: meta.sample === 'true', draft: meta.draft === 'true', section, slug, html: renderMarkdown(body) };
 }

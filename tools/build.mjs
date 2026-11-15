@@ -12,11 +12,13 @@ export async function buildSite({ contentDir = path.join(root, 'content'), dist 
     content[name] = parsePage(await readFile(path.join(contentDir, `${name}.md`), 'utf8'), `${name}.md`);
     if (name !== 'currently' && !content[name].title) throw new Error(`Add title: at the top of content/${name}.md.`);
   }
-  if (content.currently.sections.length > 1) throw new Error('Use one ## section in content/currently.md. Add items with ### label | title.');
   if (content.writings.sections.length !== 2) throw new Error('Keep two ## sections in content/writings.md: informal writing first, academic writing second.');
   const posts = [];
   for (const filename of await readdir(path.join(contentDir, 'writing'))) {
-    if (filename.endsWith('.md')) posts.push(parsePost(await readFile(path.join(contentDir, 'writing', filename), 'utf8'), filename.slice(0,-3)));
+    if (filename.endsWith('.md')) {
+      const post = parsePost(await readFile(path.join(contentDir, 'writing', filename), 'utf8'), filename.slice(0,-3));
+      if (!post.draft) posts.push(post);
+    }
   }
   posts.sort((a,b) => b.date.localeCompare(a.date));
   const pages = [
@@ -42,10 +44,10 @@ export async function buildSite({ contentDir = path.join(root, 'content'), dist 
   }
   await copyFile(path.join(root,'node_modules/katex/LICENSE'), path.join(dist,'assets/katex/LICENSE.txt'));
   for (const [filename,title,body] of pages) await writeFile(path.join(dist,filename), templates.shell(site,filename,title,body));
-  for (const post of posts) await writeFile(path.join(dist,`${post.slug}.html`), templates.shell(site, `${post.slug}.html`, post.title, templates.article(post), {post:true}));
+  for (const post of posts.filter(post => !post.externalUrl)) await writeFile(path.join(dist,`${post.slug}.html`), templates.shell(site, `${post.slug}.html`, post.title, templates.article(post), {post:true}));
   await writeFile(path.join(dist, '.nojekyll'), '');
   await writeFile(path.join(dist, 'assets/defaults.json'), JSON.stringify(site));
-  return { count: pages.length + posts.length, dist };
+  return { count: pages.length + posts.filter(post => !post.externalUrl).length, dist };
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

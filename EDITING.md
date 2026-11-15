@@ -1,6 +1,6 @@
 # Editing your website
 
-For your homepage blurb, open **[Edit homepage text](https://github.com/Robsution/robsution.github.io/edit/main/content/home.md)**. That file contains only the two paragraphs. Replace them with your own words, leave a blank line between paragraphs, and save with **Commit changes**. Commit to `main` to publish.
+For your homepage abstract, open **[Edit homepage text](https://github.com/Robsution/robsution.github.io/edit/main/content/home.md)**. That file contains only prose. Replace it with your own words, leave a blank line between paragraphs, and save with **Commit changes**. Commit to `main` to publish.
 
 GitHub then builds and updates the site automatically. You do not need to run the workflow manually. Check [Publish website in Actions](https://github.com/Robsution/robsution.github.io/actions/workflows/pages.yml) for completion, then refresh [your website](https://robsution.github.io/). GitHub's Markdown preview shows the text; the published site supplies the typography and layout.
 
@@ -9,7 +9,7 @@ GitHub then builds and updates the site automatically. You do not need to run th
 | What you want to change | File |
 | --- | --- |
 | Homepage blurb | [content/home.md](https://github.com/Robsution/robsution.github.io/edit/main/content/home.md) |
-| Homepage “Currently” items | [content/currently.md](https://github.com/Robsution/robsution.github.io/edit/main/content/currently.md) |
+| Homepage research, teaching, and software summaries | [content/currently.md](https://github.com/Robsution/robsution.github.io/edit/main/content/currently.md) |
 | Research descriptions and history | [content/research.md](https://github.com/Robsution/robsution.github.io/edit/main/content/research.md) |
 | Teaching, tutoring, and talks | [content/teaching.md](https://github.com/Robsution/robsution.github.io/edit/main/content/teaching.md) |
 | Software and other things you make | [content/making.md](https://github.com/Robsution/robsution.github.io/edit/main/content/making.md) |
@@ -70,7 +70,7 @@ What you did and where you taught.
 
 Use `### A heading` without a `|` for a normal subheading, `#### A small label` for a small heading, and `> A short aside` for a quieter note. A `---` after the entries ends the entry list, allowing a general footnote below it. Headings inside code fences are left as code.
 
-On the homepage, keep the single `## Currently` section in `content/currently.md` and use labels such as `RESEARCH` or `TEACHING` instead of dates. In `content/writings.md`, keep two `##` sections: informal writing first, academic writing second. You can rename both headings and rewrite their introductions. Actual pieces come from the individual files below.
+On the homepage, `content/currently.md` contains three `##` sections: Research, Teaching & talks, and Things I make. The first section sits beside the contour figure; the others follow beneath it. Research summaries use `### category | title`, with the title after `|` displayed above the paragraph. A `---` after the final research entry starts the general closing text and link. Edit the other two sections as ordinary paragraphs and links. In `content/writings.md`, keep two `##` sections: informal writing first, academic writing second. You can rename both headings and rewrite their introductions.
 
 ## Add a writing
 
@@ -91,11 +91,26 @@ Start writing here.
 More text, links, or equations.
 ```
 
-Use `section: posts` for informal writing, or `section: academic` for research writing and expositions. The date must be `YYYY-MM-DD`. An optional `kind:` line replaces the date label in the list with a label of your choosing. Within each group, newest pieces appear first. The homepage automatically links to your three newest informal posts.
+Use `section: posts` for informal writing, or `section: academic` for research writing and expositions. The date must be `YYYY-MM-DD`. An optional `kind:` line replaces the date label in the list with a label of your choosing. Within each group, newest pieces appear first. The homepage automatically links to your three newest public informal pieces; it omits the section when there are none.
+
+Add `draft: true` inside the metadata to keep a piece out of the public site. Remove that line or set it to `false` when ready. Rebuilding also removes an older generated page if you turn it back into a draft.
+
+For writing published elsewhere, add an HTTPS `externalUrl:` and an optional `publication:`. The list will link directly to the publisher, so you do not need to copy the essay into the file. For example, [Chocalate](https://github.com/Robsution/robsution.github.io/edit/main/content/writing/chocalate.md) uses:
+
+```md
+---
+title: Chocalate
+date: 2026-10-05
+section: posts
+publication: Pittsburgh Review of Books
+externalUrl: https://pghrev.com/chocalate/
+description: A childhood collection of chocolate, the physics of keeping it, and the cost of saving pleasure for later.
+---
+```
 
 The filename becomes the address: `a-question-about-ecology.md` becomes `a-question-about-ecology.html`. Avoid renaming a published file if people may already link to it. The names `index`, `research`, `writing`, `teaching`, and `making` are reserved for the main pages.
 
-To turn the current sample into your own piece, edit [the sample](https://github.com/Robsution/robsution.github.io/edit/main/content/writing/typesetting-a-thought.md), replace its title, description, date, and body, remove `kind: Layout specimen`, and remove `sample: true` (or set it to `false`). Sample entries are labeled and kept off the homepage's recent-post list. You can also delete the sample file; no template or test changes are needed. Keep the empty `.gitkeep` file if the folder has no writings left.
+The equation sample is kept as an unpublished draft in [typesetting-a-thought.md](https://github.com/Robsution/robsution.github.io/edit/main/content/writing/typesetting-a-thought.md). To use it for your own piece, replace its text and metadata, and remove `kind: Layout specimen`, `sample: true`, and `draft: true`. You can also keep it as a formatting reference or delete it.
 
 ## Update the CV, portrait, or personal details
 

@@ -62,3 +62,40 @@ Compatibility: Node 22 or newer for building. The Windows preview launcher can u
 - Pulled Rafael's new Markdown edits before changing the design. His longer research introduction was inheriting the 21 px lead-paragraph style throughout, making the text oversized.
 - Gave Research a scoped reading layout with 17 px overview text (16 px on phones), 16 px project descriptions, and a narrower maximum content width. Renamed “Current direction” to “Research interests”; preserved the newly authored paragraphs.
 - Added burgundy section headings, a small title rule, a faint burgundy tint and margin rule around the overview, and blue date labels. Kept the existing Paper and Crimson Text design and the other pages' typography.
+
+## 2026-10-17 — Independent homepage mock-ups
+
+- Used the supplied landing-page HTML as a visual reference and source for the inspected contour geometry and noisy-ascent interaction. Preserved its welcoming whitespace and prominent landscape while moving the personal overview into the first screen.
+- Built three local compositions: overview beside the map, compact introduction above a landscape ribbon, and a narrow reading column with a lower portrait. All try “Rafael A. Coca Salazar,” keep Crimson Text, and use a neutral near-white background. A and C add blue-green links beside burgundy; B provides a single-accent comparison.
+- Treated the supplied criticism as design input rather than instructions. Did not adopt its blanket judgment about travel photographs or its arbitrary “Before WashU” grouping. Draft copy follows research topics and teaching roles; it removes repeated collaborator references from the introductory paragraphs without inventing new results or affiliations.
+- Added a Writings layout and three introduction candidates, plus concrete prompts for research, teaching, talks, software, CV updates, and existing content inconsistencies. The study labels draft-only explanations and empty writing sections explicitly.
+- Kept everything in `design-study/` with local assets and a separate optional preview on port 4187. Public templates, styles, Markdown, and deployment configuration are unchanged. This is a comparison artifact awaiting a design choice, not a migration or deployment.
+- Added a portable `comparison.html` that embeds all five views and their display assets. Once loaded, switching compositions does not need the preview server; existing public detail-page and CV links still use the network.
+
+## 2026-10-17 — Restore the preprint character as two more alternatives
+
+- Preserved A–C before extending the study: a byte-identical portable comparison and an editable source archive are saved under `design-study/saved/`. The existing homepage layouts remain available in the expanded comparison.
+- Added D, a journal first page with a centered author identity, abstract, two columns, numbered sections, Figure 1, and a working correspondence footnote. Added E, a manuscript with a reading column, contents and explanatory notes in the margin, and a wide interactive figure.
+- Kept the preprint references functional: contents numbers correspond to actual sections on that page, footnotes link to their text, and the figure is identified as a toy model. No publication identifier, journal affiliation, peer-review status, or research result is invented. The biography remains near the top.
+- Scoped the new composition styles separately so the original three designs retain their styling. The new variants are local proposals only; the production website and deployment remain unchanged. The preview server is left running at the user's request.
+
+## 2026-10-18 — Three final preprint proposals
+
+- Combined the user's preference for D's first-page attitude, A's side-by-side composition, and C's welcoming portrait into three final homepage candidates. First page retains D's centered abstract and two columns, adding the portrait to the correspondence note; Alongside puts the portrait by the opening byline; Personal manuscript uses a reading column with an author margin.
+- Replaced mock publication labels inside these candidates with the requested actual navigation: CV on the left, Research, Writings, Teaching & talks, and Things I make on the right. Page links open the existing published pages; the study does not imply redesigned interior pages are finished.
+- Kept the comparison controls outside the proposed website and made the new comparison portable, with display assets embedded and URL fragments selecting the candidate. Intercepted intra-document links in embedded previews so correspondence links scroll within the proposal rather than nesting the comparison.
+- Added a separate final-proposal builder and stylesheet, preserving A–E and the saved A–C snapshots. Reused approved typography, portrait, toy landscape, interaction, and provisional content. The user's next content-writing pass can happen after choosing the composition; production Markdown and deployment are unchanged.
+
+## 2026-10-18 — Select First page
+
+- Recorded the user's choice of final proposal 1, First page, as the design to carry forward. Removed the separate “St. Louis, Missouri” line from the final candidates' correspondence areas, retaining the university's full name in the affiliation.
+- Rebuilt the local candidates and comparison. Content refinement and migration into the production templates remain future work; this selection does not publish the mock-up or change the earlier saved explorations.
+
+## 2026-11-14 — Publish First page with the November CV and first essay
+
+- Migrated the selected First page composition into the production templates, retaining Crimson Text, neutral Paper, the centered abstract, two-column overview, interactive burgundy Figure 1, and the portrait by correspondence. The CV stays on the left of a sticky header; interior pages use the same reading style and include Home. The separate location line and public design controls remain absent.
+- Replaced the downloadable CV with the supplied November 2026 PDF, unchanged, and updated correspondence to its WashU email. Retained the May PDF asset for existing links. Updated research dates, supervisors, completed results, and explicitly planned work; moved the muon-collider project into earlier work. Added the completed October workshop poster, teaching responsibilities, and community roles from the CV.
+- Added Chocalate as an external publication entry with the publisher's title and October 5, 2026 date. A short description links to the Pittsburgh Review of Books rather than republishing the essay. Writings keeps informal work above academic-writing context. The existing equation specimen is preserved as an editable draft.
+- Added validated HTTPS external-writing metadata and explicit draft handling. Neither external entries nor drafts create local article pages; turning a published article into a draft removes stale output on rebuild. Extended existing editing-workflow tests to cover these cases and all fragment links.
+- Kept prose in Markdown, including the homepage research, teaching, and software summaries. Paper Night's updated description follows the adjacent project's current README and remains labeled in development. Added no unprovided slides, paper downloads, software release links, or formal group appointment.
+- Preserved the local design history and snapshots, and refreshed the editing guide for the selected layout, externally published writing, and drafts. GitHub Pages continues to deploy only the built `dist/` after checks pass.

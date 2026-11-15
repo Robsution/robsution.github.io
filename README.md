@@ -1,26 +1,46 @@
 # Rafael’s personal site
 
-A preprint-inspired personal website for Rafael Arturo Coca Salazar, published at https://robsution.github.io/. This is an independent project inside `niceties/personal-site`; it does not modify the Paper Night extension.
+A preprint-inspired academic website for Rafael Arturo Coca Salazar, published at [robsution.github.io](https://robsution.github.io/). This is an independent repository inside `niceties/personal-site`; it does not modify the Paper Night extension.
 
-**To change your homepage blurb, [edit content/home.md on GitHub](https://github.com/Robsution/robsution.github.io/edit/main/content/home.md).** It contains just the paragraphs. Commit the edit to `main` and GitHub publishes it automatically. See the [editing guide](EDITING.md) for the other pages, writings, CV, and portrait.
+**To change the homepage introduction, [edit content/home.md on GitHub](https://github.com/Robsution/robsution.github.io/edit/main/content/home.md).** It contains only prose. Commit to `main` to publish through the existing GitHub Pages workflow. See [EDITING.md](EDITING.md) for the other pages and copyable examples.
 
-## Try it
+## Current site
 
-The preview is at **http://127.0.0.1:4186** while the local server is running. The chosen appearance is Crimson Text, Paper with blue links and burgundy contours, and space for the portrait at right. The design explorer and photo-picker controls are disabled. Pages use the chosen appearance directly, without loading scripts that restore earlier browser preferences.
+- The chosen **First page** design: Crimson Text on neutral Paper, a centered abstract, two columns, an interactive burgundy contour figure, and a portrait beside the correspondence email.
+- A sticky header with a direct CV download on the left and page links on the right. Interior pages add Home and highlight the current page. There are no public design controls or location line in correspondence.
+- Five main pages: Home, Research, Writings, Teaching & talks, and Things I make.
+- Research and teaching updated from the supplied November 2026 CV. Current work includes microbial consumer–resource models, conditional auxotrophy, three-spin glasses, and nuclear-response emulators. The muon-collider project is dated September 2025–September 2026.
+- The October 2026 workshop **poster** is listed by title with its collaborators. The project and presentation descriptions distinguish completed results from planned work.
+- [Chocalate](https://pghrev.com/chocalate/), published in the Pittsburgh Review of Books on October 5, 2026, links directly to the publication from Home and Writings. The publisher’s spelling is retained. Academic writing appears below informal pieces.
+- The November 2026 CV is downloadable unchanged. Site correspondence uses the WashU email from that CV.
+- Paper Night is described as an in-development local prototype, using the current Niceties project documentation. No public installation link or release is invented.
+- The equation specimen remains editable with `draft: true` and is omitted from publication. Markdown, LaTeX, and accessible MathML continue to work for real posts and page content.
 
-The selected portrait is saved in `public/portrait.jpg`, so it appears on every device. To replace it, add a JPG, PNG, or WebP to `public/` and set `portrait` to its filename in `content/site.json`.
+The toy landscape is a sum of Gaussian bumps with noisy gradient ascent, adapted from the user's supplied mock-up. It is an interactive illustration, not a research result. Display assets are hosted locally; the site has no accounts, analytics, or backend. Navigation and asset paths work under either a GitHub Pages root domain or a repository subpath.
 
-The Research page uses a compact reading layout: regular-sized introductory text, burgundy section headings and a lightly tinted overview, with blue dates separating the earlier research entries. Its text and headings remain editable in `content/research.md`.
+## Editing
 
-On this Windows computer, start a stopped preview with:
+| Content | Source |
+| --- | --- |
+| Homepage abstract | `content/home.md` |
+| Homepage research, teaching, and software summaries | `content/currently.md` |
+| Full research entries | `content/research.md` |
+| Teaching, presentations, community roles | `content/teaching.md` |
+| Software and other work | `content/making.md` |
+| Writings introductions and academic-writing summary | `content/writings.md` |
+| Individual articles or externally published writing | `content/writing/*.md` |
+| Identity, affiliation, email, portrait, CV filename/date | `content/site.json` |
+| CV, portrait, additional images | `public/` |
 
-```powershell
-.\preview.ps1
-```
+Homepage summaries use `##` sections and `### label | title` entries; the first section occupies the left of Figure 1, with subsequent sections below. The right-hand title is displayed for each research summary. Writings keeps two sections: informal pieces first, academic writing second. Recent public informal pieces appear automatically on the homepage.
 
-The launcher uses Node on PATH if it is version 22 or newer, otherwise the bundled Codex Node runtime. Stop it with Ctrl+C. Set `PERSONAL_SITE_PORT` to choose another port.
+Posts accept `section: posts` or `section: academic`, `draft: true` to exclude unfinished work, and optional `externalUrl:` and `publication:` for a piece published elsewhere. External URLs must use HTTPS; external entries link to the publisher and do not create duplicate article pages. The simple metadata format uses one `key: value` per line, rather than full YAML.
 
-On another computer, install Node 22 or newer, then:
+Use `$...$` for inline mathematics and `$$` on separate lines for display equations. Invalid LaTeX stops publication. Markdown is trusted author content and may include HTML; it is not a public upload service.
+
+## Development and preview
+
+Requires Node 22 or newer. From this repository:
 
 ```sh
 npm ci
@@ -29,67 +49,34 @@ npm test
 npm run preview
 ```
 
-## What exists
+Open <http://127.0.0.1:4186/>. On this Windows computer, `./preview.ps1` uses the bundled Node runtime when available. The preview serves `dist/`; rebuild after editing source, then refresh. Stop the server with Ctrl+C. Set `PERSONAL_SITE_PORT` to choose another port.
 
-- Six static pages: Home, Research, Writings, Teaching & talks, Things I make, and a sample article.
-- A compact introduction and a sticky masthead with a direct CV download on every page. There is no separate CV page.
-- Writings places informal posts and reflections above academic pieces. “Things I make” is a provisional name for software and non-research work.
-- A current WashU appointment and Physics 1760 teaching role based on Rafael’s supplied details.
-- Research and education history based on the May 2026 CV. The original PDF is downloadable and explicitly dated. Its “present” LBNL entry is not asserted to remain current.
-- A provisional bio and an explicit exploratory status for work with Mikhail Tikhonov.
-- A clearly identified demonstration article, with Markdown and KaTeX equations rendered at build time, including accessible MathML.
-- Local font and equation assets: the site makes no external requests and has no accounts, analytics, or backend.
-- Relative paths suitable for either a GitHub Pages root domain or a repository subpath.
+- `tools/content.mjs`: Markdown, mathematics, page sections, and writing metadata.
+- `tools/templates.mjs`: layouts; normal text editing does not require this file.
+- `tools/build.mjs`: static page generation, assets, and omission of drafts/external article pages.
+- `src/assets/style.css`: selected appearance, reading layouts, responsive and print styles.
+- `src/assets/landscape.svg` and `landscape.js`: contour figure and interaction.
+- `src/assets/interactions.js`: copying the selectable email address.
+- `dist/`: generated output; do not edit it directly.
 
-The talks section has a planned October 2026 entry awaiting its title and details. The Princeton course-assistant role is dated February 2023–May 2024; peer tutoring is dated September 2023–December 2024. There are no invented talks, publications, live software releases, advisor appointments, or biographical claims. The selected portrait is included as a permanent asset. The contact email and original referee section remain in the supplied May 2026 CV.
+The earlier font explorer scripts and packaged alternative fonts remain as historical source, but are not loaded by the public pages.
 
-## Edit content
+## Publish
 
-- `content/home.md`: homepage bio, as plain Markdown paragraphs.
-- `content/currently.md`: homepage activity summaries and links.
-- `content/research.md`, `teaching.md`, `making.md`: page titles, introductions, and entries.
-- `content/writings.md`: headings and introductions for the writing collections.
-- `content/writing/*.md`: individual posts and academic writing. Add, edit, or remove files without changing templates or tests.
-- `content/site.json`: personal details, default design, portrait filename, preview controls, CV filename, and CV display date.
-- `tools/content.mjs`: Markdown and metadata parsing; `tools/templates.mjs`: shared layout only; `tools/build.mjs`: static site generation.
-- `src/assets/style.css`: all layouts, themes, print, and responsive styles.
-- `src/assets/site.js`: design controls and local portrait previews.
-- `public/`: public files copied into `dist/assets/`. Add a permanent portrait here and set `portrait` to its filename in the configuration.
-- `dist/`: generated site. Rebuild after editing source; do not edit generated pages directly.
+The repository is [Robsution/robsution.github.io](https://github.com/Robsution/robsution.github.io). The [Publish website workflow](.github/workflows/pages.yml) installs dependencies with Node 24, builds, runs the tests, and deploys only `dist/` after checks pass. A push to `main` or a manual workflow run on `main` triggers publication.
 
-Set `section: posts` (the default) or `section: academic` in each post’s metadata to choose its Writings section. Posts use `$...$` for inline equations and `$$` on separate lines for display equations. Invalid LaTeX stops the build. The post pipeline accepts trusted author-written Markdown, including HTML; it is not a public upload service. The metadata format is deliberately simple `key: value` lines rather than full YAML.
-
-The same Markdown and math renderer handles page text. Page sections use `## Heading`; dated entries use `### DATE | Title` to retain the timeline layout. See [EDITING.md](EDITING.md) for copyable examples and direct editing links. The homepage lists the latest three informal writings automatically; sample entries are marked with `sample: true` and omitted there.
-
-## Publish with GitHub Pages
-
-The repository is [robsution/robsution.github.io](https://github.com/robsution/robsution.github.io). The included [publishing workflow](.github/workflows/pages.yml) installs dependencies with Node 24, builds and checks the site, and publishes `dist/` whenever changes are pushed to `main`. Only a successful build and test run can deploy. No hosting credentials need to be added. The following initial setup is retained for moving the source to a new repository; the current repository is already connected.
-
-1. On GitHub, create a public repository named `YOUR-USERNAME.github.io`, replacing `YOUR-USERNAME` with your GitHub username. Leave its README, license, and gitignore options empty because this folder already contains the source files.
-2. In PowerShell, run the following from an unversioned copy of this site's folder. Replace both username placeholders in the remote URL before running it. These commands are for initial setup only; do not rerun them in the current connected repository:
-
-   ```powershell
-   Set-Location 'C:\Users\rafae\projects\niceties\personal-site'
-   git init -b main
-   git add .
-   git commit -m "Add personal website"
-   git remote add origin https://github.com/YOUR-USERNAME/YOUR-USERNAME.github.io.git
-   git push -u origin main
-   ```
-
-   Git may open a browser to sign in. If it asks for a commit identity, configure your name and preferred commit email for this repository, then repeat the commit and push. The `.gitignore` excludes generated files, dependencies, caches, and preview screenshots. The contents of `personal-site` must be at the repository root, with `.github/workflows/pages.yml` included; do not upload the enclosing `niceties` folder.
-3. In the GitHub repository, open **Settings → Pages → Build and deployment → Source**, and choose **GitHub Actions**. The publishing workflow is already included, so skip the suggested templates.
-4. Open **Actions → Publish website → Run workflow**, choose `main`, and run it. This starts a fresh run if the initial push ran before Pages was enabled. After it succeeds, the site is at `https://YOUR-USERNAME.github.io/`.
-
-Later updates only need a commit and push to `main`; GitHub rebuilds and publishes automatically. A repository with another name also works, with the site under `https://YOUR-USERNAME.github.io/REPOSITORY/`, because all site paths are relative.
-
-The customizer is disabled with `previewTools: false` in `content/site.json`; its scripts and photo-picker controls are omitted from the generated pages. The sample article remains available for Rafael to edit or delete. A permanent portrait goes in `public/`, with its filename set in the same configuration. Changes committed on GitHub publish automatically; pull them before making further edits in a local checkout.
-
-See [GitHub’s Pages guide](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site), [KaTeX’s rendering documentation](https://katex.org/docs/node.html), and the separate [decision history](CODE_HISTORY.md).
+For local edits, first `git pull --ff-only`, then edit, build, test, commit, and push. Content changes made in GitHub’s editor publish automatically too. [Actions](https://github.com/Robsution/robsution.github.io/actions/workflows/pages.yml) shows deployment status.
 
 ## Verification
 
-`npm test` checks Markdown/math parsing, page sections and dated entries, literal code examples, malformed input, generated page links/assets, configurable CV links, contrast, Writings ordering, sample labels, and public pages without design controls. An isolated build test changes the bio and identity, adds a post, then deletes it and rebuilds to verify the full editing workflow. Tests use fixtures for editable copy, so normal content changes require no test edits. Build before testing. Browser observations are recorded in `REVIEW.md`.
+`npm test` checks Markdown/LaTeX, content structure, generated links and anchors, asset paths, the downloadable PDF, contrast, writing order, safe external publication links, draft exclusion, and absence of design controls. Isolated builds exercise editing the bio and identity, adding/deleting articles, and turning a published article back into a draft without stale output. Tests use fixtures instead of pinning ordinary author text.
 
+Browser review observations are in [REVIEW.md](REVIEW.md). Decisions and changes are recorded separately in [CODE_HISTORY.md](CODE_HISTORY.md).
 
-Typography references: [Newsreader](https://github.com/productiontype/Newsreader), [Spectral](https://github.com/productiontype/Spectral), [Alegreya](https://github.com/huertatipografica/Alegreya), and [Crimson Text](https://github.com/google/fonts/tree/main/ofl/crimsontext). Fonts are packaged locally with their licenses.
+## Preserved design studies
+
+The independent [design-study](design-study/README.md) folder preserves the earlier A–E proposals, three final candidates, and saved A–C snapshots. Its October copy and checklist are historical drafts; the current website is generated from `content/` and `tools/`.
+
+Run `./design-study/preview.ps1` for the historical comparison at <http://127.0.0.1:4187/final-comparison.html>. This directory is not copied into the deployed site.
+
+Crimson Text is packaged locally with its [font license](https://github.com/google/fonts/tree/main/ofl/crimsontext). KaTeX assets and their license are also bundled.

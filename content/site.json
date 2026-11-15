@@ -1,12 +1,11 @@
 {
   "name": "Rafael Arturo Coca Salazar",
   "shortName": "R. A. Coca Salazar",
-  "givenNames": "Rafael Arturo",
+  "givenNames": "Rafael A.",
   "familyName": "Coca Salazar",
-  "location": "St. Louis, Missouri",
-  "email": "rafael.coca.sal@gmail.com",
-  "role": "Physics PhD student · Arthur L. Hughes Fellow",
-  "affiliation": "Washington University in St. Louis",
+  "email": "rafaelarturo@wustl.edu",
+  "role": "Physics PhD student & Arthur L. Hughes Fellow",
+  "affiliation": "Department of Physics, Washington University in St. Louis",
   "defaultTheme": "paper",
   "defaultFont": "crimsontext",
   "defaultAccent": "blue",
@@ -16,6 +15,6 @@
   "portrait": "portrait.jpg",
   "portraitAlt": "Rafael Arturo Coca Salazar",
   "previewTools": false,
-  "cvFile": "cv-2026-05.pdf",
-  "cvDate": "May 2026"
+  "cvFile": "cv-2026-11.pdf",
+  "cvDate": "November 2026"
 }

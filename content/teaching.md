@@ -1,28 +1,44 @@
 ---
 title: Teaching & talks
-description: Courses, tutoring, and presentations.
+description: Courses, tutoring, presentations, and the physics community.
 ---
 
 ## Teaching
 
-#### CURRENT · WASHINGTON UNIVERSITY IN ST. LOUIS
+### FALL 2026 | Focused Physics I
 
-### Focused Physics I
+*Teaching assistant, PHYSICS 1760, Washington University in St. Louis.*
 
-Teaching assistant for Physics 1760, an honors-level introduction to physics.
-
-> Office hours, course links, and resources will be added here.
-
-### FEB 2023–MAY 2024 | Undergraduate Course Assistant
-
-Princeton University · PHY103 Introductory Mechanics and PHY104 Introductory Electromagnetism. Hosted office hours, led problem sessions, and prepared solution sets.
+I hold weekly office hours for a class of 40 students in this honors-level introductory physics course. I grade initial submissions of challenge problems, provide individualized feedback, and assess students’ revised solutions.
 
 ### SEP 2023–DEC 2024 | Physics Department Peer Tutor
 
-Princeton University · Classical Mechanics and Quantum Mechanics I & II. Tutored students in problem-solving, conceptual reasoning, and analytical skills.
+*Princeton University.*
 
-## Talks
+I tutored students in Classical Mechanics and Quantum Mechanics I and II, with an emphasis on conceptual reasoning and problem-solving.
 
-#### OCTOBER 2026 · PLANNED
+### FEB 2023–MAY 2024 | Undergraduate Course Assistant
 
-A first talk is on the way. Title and details to follow.
+*Princeton University.*
+
+I held office hours, led problem sessions, and prepared solutions for PHY 103, Introductory Mechanics, and PHY 104, Introductory Electromagnetism.
+
+## Presentations
+
+### OCT 2026 · POSTER | Machine-Learned Emulators and Uncertainty Estimation for Quantum Monte Carlo Nuclear Responses
+
+Presented at **Accelerating Physics with AI: A Scientific Discovery Workshop**, Washington University in St. Louis.
+
+Presented by Rafael Arturo Coca Salazar, with Saori Pastore and Alex Gnech. This work develops emulators for nuclear responses and uses uncertainty estimates to guide additional quantum Monte Carlo calculations.
+
+[Related research](research.html#current-work)
+
+## Community & service
+
+### FEB 2024–JAN 2025 | President, Princeton Society of Physics Students
+
+I organized research talks and community events, managed the mentoring program, curated academic and career resources, and contributed problems to the 2024 Physics Unlimited Premier Competition.
+
+### FEB 2023–JAN 2024 | Treasurer, Towards an Inclusive Community of Undergraduate Physicists
+
+I helped secure funding for undergraduate events and promoted mental-health awareness through events and newsletters.

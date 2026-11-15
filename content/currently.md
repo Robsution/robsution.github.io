@@ -1,25 +1,31 @@
-## Currently
+## Research
 
-### RESEARCH | Biophysics 
+### Biophysics | Microbial communities
 
-Analyzing bacterial auxotrophy data with Mikhail Tikhonov at WashU
+Trait interactions in ecological models and genomic predictions of bacterial amino-acid requirements, with Mikhail Tikhonov.
 
-### Condensed Matter
+### Condensed matter | Three-spin glasses
 
-Benchmarking local solving of p-interacting spin glasses
+How much local information reveals about lowest-energy spin configurations, with Zohar Nussinov.
 
-### ML
+### Nuclear physics | Machine-learned responses
 
-Using Neural Networks and Generative architectures to predict observables and supplant expensive simulations
+Neural-network emulators and uncertainty estimates for nuclear responses, with Saori Pastore and Alex Gnech.
 
-### TEACHING | Focused Physics I
+---
 
-TA for Physics 1760, alongside earlier teaching and tutoring at Princeton.
+Earlier work spans muon-collider backgrounds, Hamiltonian lattice QED, and precision measurement.
 
-[Teaching & talks](teaching.html)
+[Research background](research.html)
 
-### MAKING | Niceties
+## Teaching & talks
 
-Small tools for everyday friction, starting with Paper Night.
+I’m a TA for Physics 1760, *Focused Physics I*, at WashU. Previously, I was a course assistant in mechanics and electromagnetism and a peer tutor in mechanics and quantum mechanics at Princeton.
 
-[Things I make](making.html)
+[Teaching experience and presentations](teaching.html)
+
+## Things I make
+
+I’m developing **Paper Night**, a browser extension that gives research websites gentler reading palettes while preserving the colors in figures. It’s part of Niceties, a collection of tools for everyday use.
+
+[More about Paper Night](making.html)

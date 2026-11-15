@@ -38,7 +38,7 @@ test('All built page links and resources resolve, including under a project subp
   for(const page of pages){
     const html=await readFile(path.join(dist,page),'utf8');
     assert.equal((html.match(/<h1[ >]/g)||[]).length,1,`${page} needs one main heading`);
-    assert.match(html,/aria-current="page"/);
+    if(page!=='index.html')assert.match(html,/aria-current="page"/);
     assert.ok(html.includes(`<a class="cv-link" href="assets/${escapeHtml(site.cvFile)}" download`));
     assert.doesNotMatch(html,/Physics · WashU|data-writing-label|writingLabel/);
     for(const match of html.matchAll(/(?:src|href)="([^"]+)"/g)){
@@ -51,7 +51,7 @@ test('All built page links and resources resolve, including under a project subp
     }
   }
   const css=await readFile(path.join(dist,'assets/style.css'),'utf8');
-  for(const match of css.matchAll(/url\(([^)]+)\)/g))await access(path.join(dist,'assets',match[1]));
+  for(const match of css.matchAll(/url\(([^)]+)\)/g))await access(path.join(dist,'assets',match[1].replace(/^['"]|['"]$/g,'')));
 });
 test('The configured CV date and downloadable PDF reach the public site',async()=>{
   const site=JSON.parse(await readFile(path.join(root,'content/site.json'),'utf8'));
@@ -71,24 +71,25 @@ test('Public pages keep the chosen design without preview controls or preference
   assert.ok(html.includes(`data-accent="${site.defaultAccent}"`));
   assert.ok(html.includes(`data-motif-color="${site.defaultMotifColor}"`));
   const withPortrait={...publicSite,portrait:'portrait.jpg'};
-  assert.match(home(withPortrait,homeCopy,[]),/src="assets\/portrait\.jpg"/);
+  assert.match(shell(withPortrait,'index.html','Home',home(withPortrait,homeCopy,[])),/src="assets\/portrait\.jpg"/);
+  assert.doesNotMatch(html,/St\. Louis, Missouri|mailto:|nav-number|Personal preprint|Other layouts/);
   for(const page of (await readdir(dist)).filter(name=>name.endsWith('.html'))){
     const built=await readFile(path.join(dist,page),'utf8');
     assert.doesNotMatch(built,/Explore the design|Try a photograph|assets\/appearance\.js|assets\/site\.js/);
   }
 });
 
-test('Every palette has readable body, secondary, and link text on its surfaces',async()=>{
+test('The chosen paper has readable body, secondary, and link colors',async()=>{
   const css=await readFile(path.join(root,'src/assets/style.css'),'utf8');
   const luminance=hex=>{
     const channels=[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16)/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4);
     return channels.reduce((sum,v,i)=>sum+v*[.2126,.7152,.0722][i],0);
   };
   const palettes=[...css.matchAll(/:root(?:\[data-theme=([^\]]+)\])?\{([^}]+)\}/g)];
-  assert.equal(palettes.length,3);
+  assert.equal(palettes.length,1);
   for(const [,name='paper',block] of palettes){
     const colors=Object.fromEntries([...block.matchAll(/--([a-z]+):(#\w{6})/g)].map(m=>[m[1],m[2]]));
-    for(const text of ['ink','muted','blue','burgundy','graphite'])for(const surface of ['paper','inset','panel']){
+    for(const text of ['ink','muted','link','burgundy'])for(const surface of ['paper']){
       const a=luminance(colors[text]),b=luminance(colors[surface]);
       const ratio=(Math.max(a,b)+.05)/(Math.min(a,b)+.05);
       assert.ok(ratio>=4.5,`${name}: ${text} on ${surface} is only ${ratio.toFixed(2)}:1`);
@@ -140,15 +141,16 @@ test('Editing content, identity, CV date, and adding or deleting writing needs n
     await writeFile(postFile,'---\ntitle: A new post\ndate: 2030-06-01\nsection: posts\n---\nA new piece.');
     await buildSite({contentDir,dist:output});
     const html=await readFile(path.join(output,'index.html'),'utf8');
-    for(const text of ['<strong>new bio</strong>','https://example.org/','<math xmlns=','A second paragraph.','E. Name','Example <span>Full Name</span>','An updated role','A different university','A new city','Download CV (June 2030 PDF)','CV · June 2030','a-new-post.html'])assert.ok(html.includes(text),text);
-    assert.doesNotMatch(html,/No posts yet/);
+    for(const text of ['<strong>new bio</strong>','https://example.org/','<math xmlns=','A second paragraph.','Example <span class="surname">Full Name</span>','An updated role','A different university','Download CV (June 2030 PDF)','a-new-post.html'])assert.ok(html.includes(text),text);
+    assert.doesNotMatch(html,/A new city|No posts yet/);
+    assert.ok((await readFile(path.join(output,'research.html'),'utf8')).includes('E. Name'));
     const listing=await readFile(path.join(output,'writing.html'),'utf8');
     assert.match(listing,/A new post/);
     assert.doesNotMatch(listing,/Sample writing|equation specimen/);
     await unlink(postFile);
     await buildSite({contentDir,dist:output});
     await assert.rejects(access(path.join(output,'a-new-post.html')));
-    assert.match(await readFile(path.join(output,'index.html'),'utf8'),/No posts yet/);
+    assert.doesNotMatch(await readFile(path.join(output,'index.html'),'utf8'),/home-writings|a-new-post.html|No posts yet/);
     assert.doesNotMatch(await readFile(path.join(output,'writing.html'),'utf8'),/a-new-post|Sample writing/);
   } finally {
     // Only remove the test directory created above, inside this repo's ignored artifacts folder.
@@ -181,4 +183,58 @@ test('New font preferences and independent motif color survive initialization',a
   vm.runInNewContext(script,{document:{documentElement:{dataset}},localStorage:{getItem:()=>JSON.stringify({font:'spectral',motifColor:'invalid'})},location:{search:'?font=alegreya'},URLSearchParams});
   assert.equal(dataset.font,'alegreya');
   assert.equal(dataset.motifColor,'burgundy');
+});
+
+test('Externally published writings validate their destination and link directly to the publication',()=>{
+  const source='---\ntitle: Published essay\ndate: 2026-10-05\npublication: A Review\nexternalUrl: https://example.org/essay/\n---\n';
+  const post=parsePost(source,'published-essay');
+  const html=writing({name:'Author'},writingCopy,[post]);
+  assert.ok(html.includes('href="https://example.org/essay/"'));
+  assert.ok(html.includes('October 5, 2026 · A Review'));
+  assert.doesNotMatch(html,/published-essay.html/);
+  for(const url of ['javascript:alert(1)','http://example.org/','https://name:secret@example.org/','/relative']) {
+    assert.throws(()=>parsePost(source.replace('https://example.org/essay/',url),'published-essay'),/HTTPS/);
+  }
+});
+
+test('Drafts and external links create no local article pages, and removed pages do not linger',async()=>{
+  const artifactDir=path.join(root,'artifacts');
+  await mkdir(artifactDir,{recursive:true});
+  const temporary=await mkdtemp(path.join(artifactDir,'editing-test-'));
+  const contentDir=path.join(temporary,'content');
+  const output=path.join(temporary,'dist');
+  try {
+    await cp(path.join(root,'content'),contentDir,{recursive:true});
+    for(const file of await readdir(path.join(contentDir,'writing')))if(file.endsWith('.md'))await unlink(path.join(contentDir,'writing',file));
+    const source='---\ntitle: Draft-only title\ndate: 2026-10-05\n---\nSome text.';
+    const draftPath=path.join(contentDir,'writing','draft-example.md');
+    await writeFile(draftPath,source);
+    await buildSite({contentDir,dist:output});
+    await access(path.join(output,'draft-example.html'));
+    await writeFile(draftPath,source.replace('date: 2026-10-05','date: 2026-10-05\ndraft: true'));
+    await writeFile(path.join(contentDir,'writing','external-example.md'),'---\ntitle: External essay\ndate: 2026-10-05\nexternalUrl: https://example.org/essay/\n---\n');
+    await buildSite({contentDir,dist:output});
+    for(const name of ['draft-example','external-example'])await assert.rejects(access(path.join(output,name+'.html')));
+    for(const page of ['index.html','writing.html']){
+      const html=await readFile(path.join(output,page),'utf8');
+      assert.ok(html.includes('https://example.org/essay/'));
+      assert.ok(!html.includes('Draft-only title'));
+    }
+  } finally {
+    const relative=path.relative(artifactDir,temporary);
+    assert.ok(relative.startsWith('editing-test-')&&!relative.includes(path.sep));
+    await rm(temporary,{recursive:true,force:true});
+  }
+});
+
+test('Every generated fragment link resolves, including the author correspondence footnote',async()=>{
+  for(const page of (await readdir(dist)).filter(name=>name.endsWith('.html'))){
+    const html=await readFile(path.join(dist,page),'utf8');
+    for(const [,href] of html.matchAll(/href="([^"]+)"/g)){
+      if(!href.includes('#')||href.startsWith('https:'))continue;
+      const [file,id]=href.split('#');
+      const target=file ? await readFile(path.join(dist,file),'utf8') : html;
+      assert.ok(target.includes('id="'+id+'"'),page+': '+href);
+    }
+  }
 });

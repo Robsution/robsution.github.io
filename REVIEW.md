@@ -57,3 +57,13 @@ The portrait currently shown is a placeholder. The bio is a draft, the article a
 - Built all six pages and passed the twelve existing checks. Research-specific styles reduce overview text from 21 px to 17 px (16 px on phones) and entry text from 17 px to 16 px; the new class is applied only to Research.
 - Added burgundy section titles and overview treatment, blue dates, and a shorter title rule. These changes use the existing palette variables.
 - Visual inspection could not be completed: the browser tool rejected access to the existing localhost preview tab under its URL policy. No screenshot or responsive browser result is claimed for this pass.
+
+## First page and November content — 2026-11-14
+
+- Read the November CV text and visually inspected all three PDF pages. The downloadable PDF is an unchanged copy of the supplied document. Checked the published Chocalate page for its title, author, date, and subject; the site links to the original article instead of republishing it.
+- Built five static pages and passed all fifteen automated checks. Coverage includes Markdown and LaTeX, editing content, local assets and PDF links, fragment targets, contrast, external publication URLs, draft exclusion, and removal of stale article pages.
+- Inspected Home, Research, Writings, Teaching & talks, and Things I make on desktop and at 390 × 844. All five phone pages had equal document scroll and client widths, with no horizontal overflow. The longer research entries remain readable.
+- Confirmed the October presentation is listed as a poster with its title and collaborators, the new CV appears in navigation, and the writing links directly to its publisher with its publication date. No separate city/state line or public design controls appear.
+- Verified the correspondence footnote, portrait, email copy confirmation, and keyboard interaction with the contour figure. No browser errors or warnings were reported.
+- Saved screenshots to `artifacts/november-site/homepage.png` and `artifacts/november-site/mobile-correspondence.png`; these local review artifacts are not published.
+- Reset the temporary viewport after review. The selected design is now generated from the editable production content; the saved design studies remain historical references.
