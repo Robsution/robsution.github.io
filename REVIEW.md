@@ -67,3 +67,10 @@ The portrait currently shown is a placeholder. The bio is a draft, the article a
 - Verified the correspondence footnote, portrait, email copy confirmation, and keyboard interaction with the contour figure. No browser errors or warnings were reported.
 - Saved screenshots to `artifacts/november-site/homepage.png` and `artifacts/november-site/mobile-correspondence.png`; these local review artifacts are not published.
 - Reset the temporary viewport after review. The selected design is now generated from the editable production content; the saved design studies remain historical references.
+
+## Search visibility — 2026-11-26
+
+- Audited the public apex, HTTP, old GitHub Pages, www, research, nonexistent-page, robots, and sitemap endpoints. The main site and redirects worked; missing pages returned real 404s. robots.txt and sitemap.xml were absent. www HTTPS failed with a certificate name mismatch despite the correct CNAME record.
+- Built five pages and passed all 22 checks, including seven SEO tests and draft-removal sitemap coverage. Parsed the sitemap with an XML parser and confirmed its five URLs match the public pages.
+- Inspected the homepage in the browser, followed Research through navigation, and confirmed the canonical URL, unique description, absence of horizontal overflow, and loaded KaTeX math font. No browser errors or warnings were reported. The visual design and content remain intact; this metadata change did not require a new layout pass at every breakpoint.
+- Confirmed the WashU directory profile returns 200 and matches the author's name and university email. Search Console was already signed in; added the https://rafacs.com/ URL-prefix property and obtained the public HTML verification tag for deployment. Actual ownership verification and sitemap submission follow publication.

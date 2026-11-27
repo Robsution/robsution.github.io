@@ -1,5 +1,7 @@
 ---
 title: Things I make
+seoTitle: Software & Things I Make | Rafael A. Coca Salazar
+seoDescription: Software and hands-on projects by Rafael A. Coca Salazar, including Paper Night, a browser extension for reading research websites in gentler colors.
 description: Software for the everyday parts of reading and research.
 ---
 

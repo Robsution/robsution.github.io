@@ -211,10 +211,12 @@ test('Drafts and external links create no local article pages, and removed pages
     await writeFile(draftPath,source);
     await buildSite({contentDir,dist:output});
     await access(path.join(output,'draft-example.html'));
+    assert.match(await readFile(path.join(output,'sitemap.xml'),'utf8'),/draft-example\.html/);
     await writeFile(draftPath,source.replace('date: 2026-10-05','date: 2026-10-05\ndraft: true'));
     await writeFile(path.join(contentDir,'writing','external-example.md'),'---\ntitle: External essay\ndate: 2026-10-05\nexternalUrl: https://example.org/essay/\n---\n');
     await buildSite({contentDir,dist:output});
     for(const name of ['draft-example','external-example'])await assert.rejects(access(path.join(output,name+'.html')));
+    assert.doesNotMatch(await readFile(path.join(output,'sitemap.xml'),'utf8'),/draft-example|external-example|example\.org\/essay/);
     for(const page of ['index.html','writing.html']){
       const html=await readFile(path.join(output,page),'utf8');
       assert.ok(html.includes('https://example.org/essay/'));

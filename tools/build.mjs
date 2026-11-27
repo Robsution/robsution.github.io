@@ -3,10 +3,12 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parsePost, parsePage, renderMarkdown } from './content.mjs';
 import * as templates from './templates.mjs';
+import { siteUrl, sitemap, robots } from './seo.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 export async function buildSite({ contentDir = path.join(root, 'content'), dist = path.join(root, 'dist') } = {}) {
   const site = JSON.parse(await readFile(path.join(contentDir, 'site.json'), 'utf8'));
+  siteUrl(site);
   const content = { home: renderMarkdown(await readFile(path.join(contentDir, 'home.md'), 'utf8')) };
   for (const name of ['currently', 'research', 'writings', 'teaching', 'making']) {
     content[name] = parsePage(await readFile(path.join(contentDir, `${name}.md`), 'utf8'), `${name}.md`);
@@ -22,11 +24,11 @@ export async function buildSite({ contentDir = path.join(root, 'content'), dist 
   }
   posts.sort((a,b) => b.date.localeCompare(a.date));
   const pages = [
-    ['index.html','Home',templates.home(site,content,posts)],
-    ['research.html',content.research.title,templates.documentPage(site,'01',content.research)],
-    ['writing.html',content.writings.title,templates.writing(site,content.writings,posts)],
-    ['teaching.html',content.teaching.title,templates.documentPage(site,'03',content.teaching)],
-    ['making.html',content.making.title,templates.documentPage(site,'04',content.making,{projects:true})]
+    ['index.html','Home',templates.home(site,content,posts), {}],
+    ['research.html',content.research.title,templates.documentPage(site,'01',content.research), content.research],
+    ['writing.html',content.writings.title,templates.writing(site,content.writings,posts), content.writings],
+    ['teaching.html',content.teaching.title,templates.documentPage(site,'03',content.teaching), content.teaching],
+    ['making.html',content.making.title,templates.documentPage(site,'04',content.making,{projects:true}), content.making]
   ];
   await mkdir(path.join(dist, 'assets'), { recursive: true });
   // Clear only generated HTML to prevent deleted posts surviving a rebuild.
@@ -43,8 +45,11 @@ export async function buildSite({ contentDir = path.join(root, 'content'), dist 
     await copyFile(path.join(root, `node_modules/@fontsource/${family}/LICENSE`), path.join(dist, 'assets/fonts', `${family}-LICENSE.txt`));
   }
   await copyFile(path.join(root,'node_modules/katex/LICENSE'), path.join(dist,'assets/katex/LICENSE.txt'));
-  for (const [filename,title,body] of pages) await writeFile(path.join(dist,filename), templates.shell(site,filename,title,body));
-  for (const post of posts.filter(post => !post.externalUrl)) await writeFile(path.join(dist,`${post.slug}.html`), templates.shell(site, `${post.slug}.html`, post.title, templates.article(post), {post:true}));
+  for (const [filename,title,body,metadata] of pages) await writeFile(path.join(dist,filename), templates.shell(site,filename,title,body,metadata));
+  const localPosts = posts.filter(post => !post.externalUrl);
+  for (const post of localPosts) await writeFile(path.join(dist,`${post.slug}.html`), templates.shell(site, `${post.slug}.html`, post.title, templates.article(post), {...post,post}));
+  await writeFile(path.join(dist, 'sitemap.xml'), sitemap(site, [...pages.map(([filename]) => filename), ...localPosts.map(post => `${post.slug}.html`)]));
+  await writeFile(path.join(dist, 'robots.txt'), robots(site));
   await writeFile(path.join(dist, '.nojekyll'), '');
   await writeFile(path.join(dist, 'assets/defaults.json'), JSON.stringify(site));
   return { count: pages.length + posts.filter(post => !post.externalUrl).length, dist };

@@ -1,6 +1,7 @@
 ---
 title: Writings
 description: Essays, reflections, and academic writing.
+seoDescription: Essays and academic writing by physicist Rafael A. Coca Salazar, including Chocolate in the Pittsburgh Review of Books and undergraduate research writing.
 homeDescription: Essays and reflections, alongside research writing and calculations.
 ---
 

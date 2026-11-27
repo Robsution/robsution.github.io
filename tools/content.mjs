@@ -70,7 +70,9 @@ export function parsePost(source, slug) {
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) throw new Error('Use a lowercase, hyphenated post filename.');
   if (['index', 'research', 'writing', 'teaching', 'making'].includes(slug)) throw new Error(`The filename ${slug}.md is reserved for a main page. Choose another post filename.`);
   const { meta, body } = readMetadata(source, slug, true);
-  if (!meta.title || !/^\d{4}-\d{2}-\d{2}$/.test(meta.date ?? '')) throw new Error(`A title and ISO date are required in ${slug}`);
+  const validDate = value => /^\d{4}-\d{2}-\d{2}$/.test(value ?? '') && Number.isFinite(Date.parse(value)) && new Date(value).toISOString().slice(0,10) === value;
+  if (!meta.title || !validDate(meta.date)) throw new Error(`A title and valid ISO date are required in ${slug}`);
+  if (meta.updated && (!validDate(meta.updated) || meta.updated < meta.date)) throw new Error(`updated must be a valid date on or after publication in ${slug}`);
   const section = meta.section || 'posts';
   if (!['posts','academic'].includes(section)) throw new Error(`Use section: posts or section: academic in ${slug}`);
   if (meta.externalUrl) {

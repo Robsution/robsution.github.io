@@ -1,6 +1,7 @@
 ---
 title: Research
 description: Microbial communities, disordered systems, and learning from physical models.
+seoDescription: Research by Rafael A. Coca Salazar at WashU: theoretical biophysics, microbial communities, spin glasses, and machine-learned nuclear response emulators.
 ---
 
 My interests are in mathematical descriptions of complex systems, particularly at the intersection of theoretical biophysics and condensed matter. I also develop machine-learning methods to make nuclear calculations more useful and less expensive.

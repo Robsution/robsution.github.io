@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { escapeHtml as esc } from './content.mjs';
+import { searchHead } from './seo.mjs';
 
 const landscape = readFileSync(new URL('../src/assets/landscape.svg', import.meta.url), 'utf8');
 const navigation = [['research.html','Research'],['writing.html','Writings'],['teaching.html','Teaching & talks'],['making.html','Things I make']];
@@ -11,13 +12,16 @@ function correspondence(site, photo = false) {
   return `<footer class="correspondence ${photo ? '' : 'compact'}" id="correspondence">${photo && site.portrait ? `<img class="portrait" src="assets/${esc(site.portrait)}" width="750" height="1000" loading="lazy" alt="${esc(site.portraitAlt || site.name)}">` : ''}<div>${photo ? '<h2><span class="star">*</span> Correspondence</h2>' : '<span class="star">*</span> Correspondence: '}<span class="email" id="email">${esc(site.email || '')}</span> <button class="copy" type="button" data-copy="${esc(site.email || '')}" aria-label="Copy email address" aria-live="polite">Copy</button></div></footer>`;
 }
 
-export function shell(site, page, title, content, { post = false } = {}) {
+export function shell(site, page, title, content, options = {}) {
+  const { post = false } = options;
   const isHome = page === 'index.html';
   const links = isHome ? navigation : [['index.html','Home'],...navigation];
-  const nav = links.map(([href,label]) => `<a href="${href}"${href === page || (post && href === 'writing.html') ? ' aria-current="page"' : ''}>${label}</a>`).join('');
+  const nav = links.map(([href,label]) => `<a href="${href === 'index.html' ? './' : href}"${href === page || (post && href === 'writing.html') ? ' aria-current="page"' : ''}>${label}</a>`).join('');
   return `<!doctype html>
 <html lang="en" data-theme="paper" data-font="crimsontext" data-accent="blue" data-motif-color="burgundy">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${isHome ? esc(site.name) : esc(title)+' · '+esc(site.name)}</title><meta name="description" content="${esc(site.name+' — '+site.role+', '+site.affiliation+'.')}"><meta name="color-scheme" content="light"><link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="assets/katex/katex.min.css"><link rel="stylesheet" href="assets/style.css"><script defer src="assets/interactions.js"></script>${isHome ? '<script defer src="assets/landscape.js"></script>' : ''}</head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+${searchHead(site,page,title,options)}
+<meta name="color-scheme" content="light"><link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="preload" href="assets/fonts/crimson-text-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>${content.includes('class="katex"') ? '<link rel="stylesheet" href="assets/katex/katex.min.css">' : ''}<link rel="stylesheet" href="assets/style.css"><script defer src="assets/interactions.js"></script>${isHome ? '<script defer src="assets/landscape.js"></script>' : ''}</head>
 <body class="${isHome ? 'first' : 'interior'}"><a class="skip" href="#main">Skip to content</a><div class="sheet"><header class="running-head"><a class="cv-link" href="assets/${esc(site.cvFile)}" download aria-label="Download CV (${esc(site.cvDate)} PDF)" title="Download CV · ${esc(site.cvDate)}">CV <small>PDF</small></a><nav aria-label="Main navigation">${nav}</nav></header><main id="main">${content}</main>${correspondence(site,isHome)}</div></body></html>`;
 }
 
@@ -30,7 +34,7 @@ export function home(site, content, posts) {
 }
 
 export function pageHeading(site, n, title, subtitle) {
-  return `<header class="document-heading"><a class="author-link" href="index.html">${esc(site.shortName || site.name)}</a><h1>${esc(title)}</h1>${subtitle ? `<p class="document-deck">${esc(subtitle)}</p>` : ''}</header>`;
+  return `<header class="document-heading"><a class="author-link" href="./">${esc(site.shortName || site.name)}</a><h1>${esc(title)}</h1>${subtitle ? `<p class="document-deck">${esc(subtitle)}</p>` : ''}</header>`;
 }
 
 export function documentPage(site, n, content) {

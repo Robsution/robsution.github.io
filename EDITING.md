@@ -123,7 +123,15 @@ Upload a new PDF to `public/`, then change `cvFile` and `cvDate` in `content/sit
 
 Both CV download links and their dates update together. For your photo, upload an image to `public/` and update `portrait` and `portraitAlt`. Replacing the existing `portrait.jpg` also works. Public files are downloadable by visitors.
 
-In the same settings file, `shortName` is the masthead name; `givenNames` and `familyName` form the large homepage heading; `name` is the full name used in page titles and the footer. `role`, `affiliation`, `location`, and `email` control the other personal details. Preserve the JSON quotation marks and commas. Leave the appearance settings as they are to keep your chosen design.
+In the same settings file, `shortName` is the interior-page byline; `givenNames` and `familyName` form the homepage heading; `name` is the full name used in author metadata. `role`, `affiliation`, and `email` control the other personal details. Preserve the JSON quotation marks and commas. Leave the appearance settings as they are to keep your chosen design.
+
+## Search descriptions and link previews
+
+The homepage search title and summary are `seoTitle` and `description` in `content/site.json`. For the other pages, change `seoDescription` at the top of their Markdown file. It describes that page in search engines and link previews without changing the text visitors see on the page. Optional `seoTitle` changes the browser/search title while leaving the visible heading alone. Keep these plain text, accurate, and specific to the page.
+
+For a writing, its ordinary `description` supplies the preview summary. If you substantially revise a published piece, you can add `updated: 2026-11-26` using the actual revision date. The original `date` remains its publication date. New local writings automatically enter the sitemap; drafts and external publication links do not get local article URLs. You do not need to edit the sitemap manually.
+
+The `url` setting is the canonical website address, currently `https://rafacs.com/`. Keep it unchanged unless the domain moves. `sameAs` contains confirmed public profiles identifying you, currently your WashU directory page. The portrait also supplies the social preview image. Search Console setup is described in the [README](README.md#search-visibility).
 
 ## If you edit on your computer
 

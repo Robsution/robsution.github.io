@@ -103,3 +103,11 @@ Compatibility: Node 22 or newer for building. The Windows preview launcher can u
 ## 2026-11-14 — Correct the essay title
 
 - Changed the displayed title to Chocolate at the author's request. Home and Writings use the same entry; the publisher URL and source filename remain unchanged. Updated the editing example to match.
+
+## 2026-11-26 — Search visibility for rafacs.com
+
+- Audited the live site and confirmed the custom domain and redirects. Found repeated page descriptions and missing canonical, sitemap, crawler-discovery, social-preview, and author metadata. Chose a focused technical SEO pass that preserves the selected composition and prose.
+- Added editable per-page search descriptions and titles, absolute canonical and social URLs, and safely serialized JSON-LD connecting the author, confirmed WashU profile, website, and page. Future local writings receive BlogPosting metadata and validated publication/revision dates; no unfinished work is presented as a scholarly publication.
+- Generate robots.txt and sitemap.xml from the actual built pages, excluding drafts, external article destinations, historical studies, and stale output. Omitted unsupported or guessed freshness signals. Root links now consistently use the canonical homepage path while remaining relative for previews.
+- Reused the existing portrait for social previews, preloaded the primary reading font, and load equation CSS only when equations occur. Retained the GitHub Pages deployment and existing URL paths.
+- Added regression checks for metadata consistency, sitemap membership and removals, identity relationships, JSON escaping, date/URL validation, and conditional math styles. Documented editable SEO fields and Search Console verification/submission. Public DNS already has the expected www CNAME; the observed www HTTPS certificate issue requires checking hosting state rather than overwriting working DNS.

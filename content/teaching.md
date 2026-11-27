@@ -1,6 +1,7 @@
 ---
 title: Teaching & talks
 description: Courses, tutoring, presentations, and the physics community.
+seoDescription: Physics teaching, tutoring, and presentations by Rafael A. Coca Salazar, including Focused Physics I at WashU and undergraduate teaching at Princeton.
 ---
 
 ## Teaching
