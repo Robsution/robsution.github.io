@@ -75,7 +75,7 @@ The canonical address is `https://rafacs.com/`, controlled by `url` in `content/
 
 Homepage search text uses `seoTitle` and `description` in `content/site.json`. Interior pages can set `seoTitle` and `seoDescription` in their Markdown metadata without changing the visible heading or introduction. Articles use their own title and description, with an optional truthful `updated: YYYY-MM-DD` date. The sitemap deliberately omits guessed modification dates, priority, and change frequency. Home links consistently use `./`, matching the canonical root while retaining local previews and repository-subpath compatibility.
 
-JSON-LD connects the homepage ProfilePage, Person, and WebSite, including the verified WashU directory profile in `sameAs`. Only add other profiles after confirming they belong to the author. This markup helps describe the site; it does not guarantee a special search result. The existing portrait supplies share previews. The primary reading font is preloaded and KaTeX CSS is loaded only on pages with rendered mathematics.
+JSON-LD connects the homepage ProfilePage, Person, and WebSite, including the verified WashU directory profile in `sameAs`. The homepage title and introduction use Rafael Coca, the author's requested search name and published essay byline. `alternateNames` connects this name and Rafael Coca Salazar with the full name and existing abbreviated variants; the formal heading remains Rafael A. Coca Salazar. Only add actual name variants and confirmed profiles. This markup helps describe the site; it does not guarantee a special search result or ranking. The existing portrait supplies share previews. The primary reading font is preloaded and KaTeX CSS is loaded only on pages with rendered mathematics.
 
 To connect [Google Search Console](https://search.google.com/search-console/):
 
@@ -85,7 +85,7 @@ The owner completed Search Console setup in another browser on November 26 and i
 2. Copy only the supplied tag's `content` value into a `googleSiteVerification` string in `content/site.json`, publish, then click **Verify** in Search Console. Keep the token after verification. No analytics script is needed.
 3. Submit **https://rafacs.com/sitemap.xml** in Sitemaps. Inspect the homepage URL, run a live test, and request indexing. Monitor Page indexing and Performance for actual Google status; a general web search is not a definitive indexing audit.
 
-On November 26 the apex HTTPS address, HTTP redirect, and old GitHub Pages redirect worked. The `www` CNAME already pointed to `robsution.github.io`, but an HTTPS request to `www.rafacs.com` failed certificate-name validation. That remaining hosting/certificate check is separate from the canonical metadata. Check GitHub Pages' domain/certificate status before changing correct DNS records. The available browser session was signed out of GitHub, so no hosting settings were changed.
+The earlier www certificate issue was resolved when rechecked on November 26: HTTPS certificate validation succeeds, and www permanently redirects (301) to https://rafacs.com/. HTTP and the old GitHub Pages address also redirect to the canonical HTTPS site. No Porkbun SSL bundle needs to be installed in this repository.
 
 The strongest next content work is publishing substantive research outputs and adding the canonical site link to relevant author-controlled university, ORCID, publication, or GitHub profiles. Add those links only where appropriate and authorized. No keyword stuffing, fabricated papers, purchased links, or indexation claims are used here.
 

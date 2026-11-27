@@ -131,7 +131,7 @@ The homepage search title and summary are `seoTitle` and `description` in `conte
 
 For a writing, its ordinary `description` supplies the preview summary. If you substantially revise a published piece, you can add `updated: 2026-11-26` using the actual revision date. The original `date` remains its publication date. New local writings automatically enter the sitemap; drafts and external publication links do not get local article URLs. You do not need to edit the sitemap manually.
 
-The `url` setting is the canonical website address, currently `https://rafacs.com/`. Keep it unchanged unless the domain moves. `sameAs` contains confirmed public profiles identifying you, currently your WashU directory page. The portrait also supplies the social preview image. Search Console setup is described in the [README](README.md#search-visibility).
+The `url` setting is the canonical website address, currently `https://rafacs.com/`. Keep it unchanged unless the domain moves. `alternateNames` lists actual names you use, currently Rafael Coca and Rafael Coca Salazar, so search engines can connect them with your full name. `sameAs` contains confirmed public profiles identifying you, currently your WashU directory page. The portrait also supplies the social preview image. Search Console setup is described in the [README](README.md#search-visibility).
 
 ## If you edit on your computer
 

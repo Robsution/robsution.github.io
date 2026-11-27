@@ -25,9 +25,13 @@ export function searchHead(site, page, title, { post = false, seoTitle, seoDescr
   const websiteId = base + '#website';
   const pageId = url + '#webpage';
   const image = site.portrait ? new URL(`assets/${site.portrait}`, base).href : null;
+  const alternateNames = site.alternateNames ?? [];
+  if (!Array.isArray(alternateNames) || alternateNames.some(name => typeof name !== 'string' || !name.trim())) {
+    throw new Error('alternateNames must be a list of non-empty names in content/site.json.');
+  }
   const person = {
     '@type': 'Person', '@id': personId, name: site.name,
-    alternateName: [...new Set([displayName, site.shortName].filter(name => name && name !== site.name))],
+    alternateName: [...new Set([displayName, site.shortName, ...alternateNames.map(name => name.trim())].filter(name => name && name !== site.name))],
     url: base, jobTitle: site.role,
     affiliation: { '@type': 'Organization', name: site.affiliation },
     ...(image ? { image } : {})

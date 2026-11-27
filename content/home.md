@@ -1,1 +1,1 @@
-I study how mathematical models describe complex systems, from microbial communities to disordered magnets. My current work brings together theoretical biophysics, statistical physics, and machine-learning methods for nuclear response calculations.
+I’m Rafael Coca, and I study mathematical models of complex systems, from microbial communities to disordered magnets. My current work brings together theoretical biophysics, statistical physics, and machine-learning methods for nuclear response calculations.

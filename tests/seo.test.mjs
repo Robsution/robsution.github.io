@@ -50,7 +50,18 @@ test('The homepage identifies the real author and connects the profile, website,
   assert.equal(person.affiliation.name, site.affiliation);
   assert.deepEqual(person.sameAs, site.sameAs);
   assert.ok(person.alternateName.includes(site.givenNames + ' ' + site.familyName));
+  for (const name of site.alternateNames ?? []) assert.ok(person.alternateName.includes(name));
   assert.ok(!graph.some(node => node['@type'] === 'ScholarlyArticle'));
+});
+
+test('Author name variants are optional, deduplicated, and validated before publication', () => {
+  const authorFrom = alternateNames => graphFrom(searchHead({ ...site, alternateNames }, 'index.html', 'Home')).find(node => node['@type'] === 'Person');
+  const author = authorFrom(['A pen name', ' A pen name ', site.name]);
+  assert.equal(author.name, site.name);
+  assert.equal(author.alternateName.filter(name => name === 'A pen name').length, 1);
+  assert.ok(!author.alternateName.includes(site.name));
+  assert.ok(authorFrom(undefined).alternateName.includes(site.shortName));
+  for (const invalid of ['A pen name', [123], [' ']]) assert.throws(() => authorFrom(invalid), /alternateNames/);
 });
 
 test('Canonical URLs support root and project-subpath hosting and reject unsuitable website addresses', () => {

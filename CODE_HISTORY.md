@@ -111,3 +111,9 @@ Compatibility: Node 22 or newer for building. The Windows preview launcher can u
 - Generate robots.txt and sitemap.xml from the actual built pages, excluding drafts, external article destinations, historical studies, and stale output. Omitted unsupported or guessed freshness signals. Root links now consistently use the canonical homepage path while remaining relative for previews.
 - Reused the existing portrait for social previews, preloaded the primary reading font, and load equation CSS only when equations occur. Retained the GitHub Pages deployment and existing URL paths.
 - Added regression checks for metadata consistency, sitemap membership and removals, identity relationships, JSON escaping, date/URL validation, and conditional math styles. Documented editable SEO fields and Search Console verification/submission. Public DNS already has the expected www CNAME; the observed www HTTPS certificate issue requires checking hosting state rather than overwriting working DNS.
+
+## 2026-11-26 — Connect the Rafael Coca byline with the academic identity
+
+- The author wants the site discoverable for Rafael Coca, also the byline on the published Chocolate essay. Put that name in the homepage search title and natural introductory prose, with the full name retained in the description, author entity, and formal page identity.
+- Added editable, validated alternateNames metadata so Rafael Coca and Rafael Coca Salazar resolve to the same Person as the existing full name and initials. Kept all page URLs and design styling unchanged; did not create duplicate name-targeted pages or keyword lists.
+- Extended the author metadata checks to cover optional aliases, duplicates, and invalid input. Updated the domain notes after a successful www HTTPS and permanent-redirect recheck. Indexing and ranking remain external outcomes; the owner manages Search Console in their own browser.
