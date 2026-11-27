@@ -79,11 +79,13 @@ JSON-LD connects the homepage ProfilePage, Person, and WebSite, including the ve
 
 To connect [Google Search Console](https://search.google.com/search-console/):
 
+The owner completed Search Console setup in another browser on November 26 and is handling sitemap submission there. The setup steps below are retained for future reference; the agent's separate URL-prefix verification flow was not completed. Google’s public [Rich Results Test](https://search.google.com/test/rich-results/result?id=fSarOuYpWgK5r1-g7HkUbw) successfully crawled the deployed homepage and detected one valid ProfilePage item. This validates the markup, not Google index inclusion or ranking.
+
 1. Add a URL-prefix property for **https://rafacs.com/**. Choose HTML-tag verification. This avoids needing DNS access for this one canonical address; a Domain property verified through Porkbun DNS is an alternative if all subdomains/protocols should be included.
 2. Copy only the supplied tag's `content` value into a `googleSiteVerification` string in `content/site.json`, publish, then click **Verify** in Search Console. Keep the token after verification. No analytics script is needed.
 3. Submit **https://rafacs.com/sitemap.xml** in Sitemaps. Inspect the homepage URL, run a live test, and request indexing. Monitor Page indexing and Performance for actual Google status; a general web search is not a definitive indexing audit.
 
-On November 26 the apex HTTPS address, HTTP redirect, and old GitHub Pages redirect worked. The `www` CNAME already pointed to `robsution.github.io`, but an HTTPS request to `www.rafacs.com` failed certificate validation. That remaining hosting/certificate check is separate from the canonical metadata. Check GitHub Pages' domain/certificate status before changing correct DNS records.
+On November 26 the apex HTTPS address, HTTP redirect, and old GitHub Pages redirect worked. The `www` CNAME already pointed to `robsution.github.io`, but an HTTPS request to `www.rafacs.com` failed certificate-name validation. That remaining hosting/certificate check is separate from the canonical metadata. Check GitHub Pages' domain/certificate status before changing correct DNS records. The available browser session was signed out of GitHub, so no hosting settings were changed.
 
 The strongest next content work is publishing substantive research outputs and adding the canonical site link to relevant author-controlled university, ORCID, publication, or GitHub profiles. Add those links only where appropriate and authorized. No keyword stuffing, fabricated papers, purchased links, or indexation claims are used here.
 
